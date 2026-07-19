@@ -973,6 +973,7 @@
         <p class="view-desc">Avisos diários e recorrentes, fora do calendário — defina horário e dias</p>
         <div class="inline-form" id="routineForm">
           <input type="text" id="routineNameInput" placeholder="Nome do aviso">
+          <select id="routineProjSelect"><option value="">Sem projeto (só eu)</option></select>
           <button class="confirm" id="routineConfirm">Criar</button>
           <button class="cancel" id="routineCancel">Cancelar</button>
         </div>
@@ -1038,6 +1039,7 @@
         <div class="inline-form" id="projectForm">
           <input type="text" id="projectNameInput" placeholder="Nome do novo projeto" style="flex-basis:100%;">
           <div class="color-swatches" id="projectColorSwatches"></div>
+          <div id="projectMembersPicker" style="flex-basis:100%; display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;"></div>
           <button class="confirm" id="projectConfirm">Criar</button>
           <button class="cancel" id="projectCancel">Cancelar</button>
         </div>
@@ -1245,6 +1247,27 @@
   // ---------- Config da API ----------
   const API_URL = 'https://script.google.com/macros/s/AKfycbzovCWrbI1SEJUb6eLAyBZzFApS8FEklsHw5Qv-Chtx_tEYbfhWi_uRJ8z8t2H8i-gt/exec';
   let currentProfileId = 'perfil_victor';
+  let accessibleProjectIds = new Set();
+
+  // Um card é visível pro perfil atual se: for dono dele, OU pertencer a um projeto
+  // do qual o perfil atual é membro (inclusive o dono do projeto, que também vira membro).
+  function isVisibleToCurrentProfile(card) {
+    if (!card) return false;
+    if (card.perfil_dono_id === currentProfileId) return true;
+    if (card.projeto_id && accessibleProjectIds.has(card.projeto_id)) return true;
+    return false;
+  }
+
+  async function computeAccessibleProjects() {
+    try {
+      const memberships = await apiGet('ProjetoMembros', { perfil_id: currentProfileId });
+      accessibleProjectIds = new Set((memberships || []).map(m => m.projeto_id));
+    } catch (err) {
+      console.error('Não foi possível carregar projetos compartilhados:', err);
+      accessibleProjectIds = new Set();
+    }
+  }
+
 
   async function apiGet(sheet, filters) {
     let url = `${API_URL}?sheet=${sheet}`;
@@ -1338,8 +1361,8 @@
     calStatusMsg.textContent = 'Carregando dados da planilha...';
     try {
       const [projects, cards] = await Promise.all([apiGet('Projetos'), apiGet('Cards')]);
-      projectsData = projects;
-      cardsData = cards.filter(c => c.data); // só cards com data entram no calendário
+      projectsData = projects.filter(p => accessibleProjectIds.has(p.id) || p.dono_perfil_id === currentProfileId);
+      cardsData = cards.filter(c => c.data && isVisibleToCurrentProfile(c)); // só cards com data entram no calendário, e só os visíveis pro perfil atual
       projColor = {}; projName = {};
       projectsData.forEach(p => { projColor[p.id] = p.cor; projName[p.id] = p.nome; });
       renderProjectFilters();
@@ -2237,7 +2260,7 @@
   async function loadNotasView() {
     notesListEl.innerHTML = '<div style="color:var(--text-muted); font-size:13px;">Carregando...</div>';
     try {
-      notasCardsData = await apiGet('Cards', { tipo: 'nota' });
+      notasCardsData = (await apiGet('Cards', { tipo: 'nota' })).filter(isVisibleToCurrentProfile);
       renderNotasView();
     } catch (err) {
       notesListEl.innerHTML = `<div style="color:#B0453A; font-size:13px;">Não foi possível carregar notas (${err.message}).</div>`;
@@ -2308,7 +2331,7 @@
   async function loadIdeiasView() {
     ideasListEl.innerHTML = '<div style="color:var(--text-muted); font-size:13px;">Carregando...</div>';
     try {
-      ideiasCardsData = await apiGet('Cards', { tipo: 'ideia' });
+      ideiasCardsData = (await apiGet('Cards', { tipo: 'ideia' })).filter(isVisibleToCurrentProfile);
       renderIdeiasView();
     } catch (err) {
       ideasListEl.innerHTML = `<div style="color:#B0453A; font-size:13px;">Não foi possível carregar ideias (${err.message}).</div>`;
@@ -2471,10 +2494,13 @@
       const [boards, columns, models, cards] = await Promise.all([
         apiGet('KanbanQuadros'), apiGet('KanbanColunas'), apiGet('KanbanModelos'), apiGet('Cards')
       ]);
-      kanbanBoardsData = boards;
-      kanbanColumnsData = columns;
+      // quadro sem projeto vinculado fica visível pra todos (não tem "dono" definido);
+      // quadro com projeto só aparece pra quem tem acesso àquele projeto
+      kanbanBoardsData = boards.filter(b => !b.projeto_id || accessibleProjectIds.has(b.projeto_id));
+      const visibleBoardIds = new Set(kanbanBoardsData.map(b => b.id));
+      kanbanColumnsData = columns.filter(c => visibleBoardIds.has(c.quadro_id));
       kanbanModelsData = models;
-      kanbanCardsData = cards.filter(c => c.kanban_quadro_id);
+      kanbanCardsData = cards.filter(c => c.kanban_quadro_id && visibleBoardIds.has(c.kanban_quadro_id));
       populateTemplateSelect();
       renderAllKanbanBoards();
     } catch (err) {
@@ -3104,8 +3130,48 @@
         html += `</div>`;
       }
 
-      html += `<div class="detail-note" style="margin-top:20px;">Notas, Ideias e Rotina ainda não estão conectadas a projetos — isso entra numa próxima etapa.</div>`;
+      html += `<div class="detail-field"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">Compartilhado com</label><div id="projectMembersList">Carregando...</div></div>`;
       wrap.innerHTML = html;
+
+      const members = await apiGet('ProjetoMembros', { projeto_id: project.id });
+      const memberProfiles = members.map(m => profilesData.find(p => p.id === m.perfil_id)).filter(Boolean);
+      const nonMembers = profilesData.filter(p => !members.some(m => m.perfil_id === p.id));
+      const membersListEl = document.getElementById('projectMembersList');
+      if (membersListEl) {
+        membersListEl.innerHTML = memberProfiles.map(p => `
+          <div class="proj-detail-row" data-perfil-id="${p.id}">
+            <span>${p.nome}${p.id === project.dono_perfil_id ? ' (dono)' : ''}</span>
+            ${p.id !== project.dono_perfil_id ? `<button class="row-action-btn danger remove-member-btn" title="Remover">🗑</button>` : ''}
+          </div>`).join('') +
+          (nonMembers.length ? `
+          <div style="display:flex; gap:6px; margin-top:8px;">
+            <select id="addMemberSelect" style="flex:1;">${nonMembers.map(p => `<option value="${p.id}">${p.nome}</option>`).join('')}</select>
+            <button class="task-small-btn" id="addMemberBtn">Adicionar</button>
+          </div>` : '');
+
+        membersListEl.querySelectorAll('.remove-member-btn').forEach((btn, i) => {
+          btn.addEventListener('click', async () => {
+            btn.disabled = true;
+            const rec = members.find(m => m.perfil_id === memberProfiles[i]?.id);
+            if (rec) {
+              await apiPost('delete', 'ProjetoMembros', rec.id);
+              openProjectDetail(project);
+            }
+          });
+        });
+
+        const addBtn = document.getElementById('addMemberBtn');
+        if (addBtn) {
+          addBtn.addEventListener('click', async () => {
+            const sel = document.getElementById('addMemberSelect');
+            const perfilId = sel.value;
+            addBtn.disabled = true; addBtn.textContent = 'Adicionando...';
+            const res = await apiPost('create', 'ProjetoMembros', null, { projeto_id: project.id, perfil_id: perfilId });
+            if (res && res.result && perfilId === currentProfileId) accessibleProjectIds.add(project.id);
+            openProjectDetail(project);
+          });
+        }
+      }
     } catch (err) {
       wrap.innerHTML = `<div style="color:#B0453A; font-size:13px;">Não foi possível carregar (${err.message}).</div>`;
     }
@@ -3215,6 +3281,17 @@
   const projectFormEl = document.getElementById('projectForm');
   document.getElementById('newProjectBtn').addEventListener('click', () => {
     projectFormEl.classList.add('open');
+    const picker = document.getElementById('projectMembersPicker');
+    const others = profilesData.filter(p => p.id !== currentProfileId);
+    if (others.length === 0) {
+      picker.innerHTML = '';
+    } else {
+      picker.innerHTML = '<div style="flex-basis:100%; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:2px;">Compartilhar com</div>' +
+        others.map(p => `
+          <label style="display:flex; align-items:center; gap:5px; font-size:12.5px; border:1px solid var(--line); padding:5px 10px; cursor:pointer;">
+            <input type="checkbox" class="project-member-check" value="${p.id}"> ${p.nome}
+          </label>`).join('');
+    }
     document.getElementById('projectNameInput').focus();
   });
   document.getElementById('projectCancel').addEventListener('click', () => projectFormEl.classList.remove('open'));
@@ -3233,6 +3310,12 @@
       });
       if (res && res.result) {
         projectsData.push(res.result);
+        const selectedMembers = Array.from(document.querySelectorAll('.project-member-check:checked')).map(el => el.value);
+        const memberIds = [currentProfileId, ...selectedMembers]; // dono sempre entra como membro também
+        await Promise.all(memberIds.map(pid =>
+          apiPost('create', 'ProjetoMembros', null, { projeto_id: res.result.id, perfil_id: pid })
+        ));
+        accessibleProjectIds.add(res.result.id);
         renderProjectsView();
         renderProjectFilters();
         renderProjectSelect();
@@ -3265,7 +3348,7 @@
     routineList.innerHTML = '<div style="color:var(--text-muted); font-size:13px;">Carregando...</div>';
     try {
       const all = await apiGet('Cards');
-      rotinaCardsData = all.filter(c => c.recorrencia);
+      rotinaCardsData = all.filter(c => c.recorrencia && isVisibleToCurrentProfile(c));
       renderRotinaView();
     } catch (err) {
       routineList.innerHTML = `<div style="color:#B0453A; font-size:13px;">Não foi possível carregar (${err.message}).</div>`;
@@ -3362,6 +3445,7 @@
   const routineFormEl = document.getElementById('routineForm');
   document.getElementById('newRoutineBtn').addEventListener('click', () => {
     routineFormEl.classList.add('open');
+    document.getElementById('routineProjSelect').innerHTML = '<option value="">Sem projeto (só eu)</option>' + projectsData.map(p => `<option value="${p.id}">${p.nome}</option>`).join('');
     document.getElementById('routineNameInput').focus();
   });
   document.getElementById('routineCancel').addEventListener('click', () => routineFormEl.classList.remove('open'));
@@ -3371,9 +3455,10 @@
     if (btn.disabled) return;
     const name = input.value.trim();
     if (!name) return;
+    const projeto_id = document.getElementById('routineProjSelect').value;
     btn.disabled = true; const original = btn.textContent; btn.textContent = 'Criando...';
     try {
-      const res = await apiPost('create', 'Cards', null, { tipo: 'tarefa', titulo: name, hora: '09:00', recorrencia: '', projeto_id: '', perfil_dono_id: currentProfileId, status: 'pendente' });
+      const res = await apiPost('create', 'Cards', null, { tipo: 'tarefa', titulo: name, hora: '09:00', recorrencia: '', projeto_id: projeto_id, perfil_dono_id: currentProfileId, status: 'pendente' });
       if (res && res.result) { rotinaCardsData.push(res.result); renderRotinaView(); }
       input.value = ''; routineFormEl.classList.remove('open');
     } finally {
@@ -4297,6 +4382,7 @@
       profileName.textContent = profile.nome;
     }
     await loadAndApplyPreferences(profileId);
+    await computeAccessibleProjects();
     loadCalendarData();
     loadKanbanData();
     loadNotasView();
