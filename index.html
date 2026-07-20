@@ -320,6 +320,12 @@
   .chip.off { opacity: 0.28; }
 
   .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: var(--line-soft); border: 1px solid var(--line); width: calc(100% + 24px); margin-left: -12px; overflow: hidden; }
+  .cal-grid.agenda-mode { display: block; background: none; border: none; width: 100%; margin-left: 0; }
+  .agenda-day-group { border-bottom: 1px solid var(--line-soft); padding: 14px 0; }
+  .agenda-day-group.today .agenda-day-header { color: var(--accent); }
+  .agenda-day-header { font-family: var(--font-utility); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-muted); margin-bottom: 10px; cursor: pointer; }
+  .agenda-item { border-left: 3px solid #888; padding: 10px 12px; margin-bottom: 7px; font-size: 13.5px; cursor: pointer; background: var(--panel); }
+  .agenda-empty { font-size: 12.5px; color: var(--text-muted); font-style: italic; padding: 4px 0; }
   .cal-day-name { font-family: var(--font-utility); font-size: 10.5px; color: var(--text-muted); text-align: center; padding: 6px 0; text-transform: uppercase; letter-spacing: 0.5px; background: var(--bg); }
   .cal-cell { background: var(--bg); min-height: 82px; min-width: 0; padding: 8px; font-size: 12px; overflow: hidden; }
   @media (min-width: 561px) {
@@ -803,9 +809,33 @@
     #body-row.pos-rodape nav#sidebar {
       overflow-x: auto;
     }
-    main#content { padding: 22px 18px; --content-pad: 18px; }
-    #clo-panel { width: calc(100% - 32px); right: 16px; }
-    #settings-panel, #detail-panel { width: 86%; }
+    main#content { padding: 18px 14px; --content-pad: 14px; }
+
+    /* painéis flutuantes viram tela cheia — nada de faixa lateral apertada */
+    #clo-panel { width: 100%; height: 100%; right: 0; bottom: 0; border-radius: 0; }
+    #settings-panel, #detail-panel {
+      width: 100%; max-width: 100%; padding: 22px 18px 90px 18px;
+    }
+    .close-x { top: 20px; right: 18px; width: 34px; height: 34px; font-size: 14px; }
+
+    /* formulários inline empilham em vez de ficar lado a lado */
+    .inline-form.open {
+      flex-direction: column; align-items: stretch;
+    }
+    .inline-form input, .inline-form select, .inline-form button {
+      width: 100%;
+    }
+    .day-add-row { flex-direction: column; align-items: stretch; }
+    .day-add-row input, .day-add-row select, .day-add-row button { width: 100%; }
+    .option-row { gap: 6px; }
+    .opt-btn { padding: 9px 12px; font-size: 12px; }
+
+    /* alvos de toque maiores nos ícones de ação */
+    .row-action-btn { width: 34px; height: 34px; font-size: 14px; }
+    .weekday-btn { width: 34px; height: 34px; }
+
+    /* modais de confirmação/edição de perfil também ficam mais confortáveis */
+    .login-box { width: 100%; padding: 0 4px; }
   }
 </style>
 </head>
@@ -1394,11 +1424,22 @@
     return `${calYear}-${String(calMonth + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
   }
 
+  function isMobileView() {
+    return window.innerWidth <= 560;
+  }
+
   function renderCalendar() {
     document.getElementById('calMonthLabel').textContent = `${monthNames[calMonth]} de ${calYear}`;
     const offDays = Array.from(document.querySelectorAll('#projectFilters .chip.off')).map(c => c.dataset.proj);
     const offStatus = Array.from(document.querySelectorAll('#statusFilters .chip.off')).map(c => c.dataset.status);
     const grid = document.getElementById('calGrid');
+
+    if (isMobileView()) {
+      renderCalendarAgenda(grid, offDays, offStatus);
+      return;
+    }
+
+    grid.classList.remove('agenda-mode');
     grid.innerHTML = '';
     dayNames.forEach(d => { const el=document.createElement('div'); el.className='cal-day-name'; el.textContent=d; grid.appendChild(el); });
     const firstWeekday = new Date(calYear, calMonth, 1).getDay();
@@ -1422,6 +1463,56 @@
       grid.appendChild(cell);
     }
   }
+
+  function renderCalendarAgenda(grid, offDays, offStatus) {
+    grid.classList.add('agenda-mode');
+    grid.innerHTML = '';
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    const isCurrentRealMonth = (calYear === realToday.getFullYear() && calMonth === realToday.getMonth());
+    let anyDay = false;
+    for (let day = 1; day <= daysInMonth; day++) {
+      const items = cardsForDay(day).filter(ev => !offDays.includes(ev.projeto_id) && !offStatus.includes(ev.status || 'pendente'));
+      const isToday = isCurrentRealMonth && day === realToday.getDate();
+      if (items.length === 0 && !isToday) continue; // agenda só mostra dias com algo (ou hoje, como âncora)
+      anyDay = true;
+      const group = document.createElement('div');
+      group.className = 'agenda-day-group' + (isToday ? ' today' : '');
+      const header = document.createElement('div');
+      header.className = 'agenda-day-header';
+      const weekday = dayNames[new Date(calYear, calMonth, day).getDay()];
+      header.textContent = `${weekday} · ${day}${isToday ? ' · hoje' : ''}`;
+      header.addEventListener('click', () => openDayDetail(day));
+      group.appendChild(header);
+      if (items.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'agenda-empty';
+        empty.textContent = 'Nenhuma atividade';
+        group.appendChild(empty);
+      } else {
+        items.forEach(ev => {
+          const item = document.createElement('div');
+          item.className = 'agenda-item';
+          item.style.borderColor = projColor[ev.projeto_id] || '#888';
+          item.textContent = `${TYPE_EMOJI[ev.tipo]||''} ${ev.titulo} ${statusEmoji(ev.status)}`;
+          item.addEventListener('click', (e) => { e.stopPropagation(); openDayDetail(day); });
+          group.appendChild(item);
+        });
+      }
+      grid.appendChild(group);
+    }
+    if (!anyDay) {
+      grid.innerHTML = '<div class="agenda-empty" style="padding:20px 0;">Nenhuma atividade neste mês.</div>';
+    }
+  }
+
+  let lastIsMobileView = isMobileView();
+  window.addEventListener('resize', () => {
+    const nowMobile = isMobileView();
+    if (nowMobile !== lastIsMobileView) {
+      lastIsMobileView = nowMobile;
+      renderCalendar();
+    }
+  });
 
   document.getElementById('calPrevMonth').addEventListener('click', () => {
     calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
