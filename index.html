@@ -1221,6 +1221,15 @@
       <button class="task-small-btn" id="confirmContaBtn" style="width:100%;">Salvar alterações</button>
       <div id="contaSaveStatus" style="font-family:var(--font-utility); font-size:11px; color:var(--text-muted); margin-top:8px; text-align:center;"></div>
     </div>
+    <div class="settings-group" id="installAppSection" style="display:none;">
+      <div class="settings-label">Instalar</div>
+      <button class="task-small-btn" id="installAppBtn" style="width:100%;">📲 Instalar app neste aparelho</button>
+      <div style="font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); margin-top:8px; line-height:1.5;">Funciona tanto no celular quanto no computador — vira um ícone próprio, sem a barra de endereço do navegador.</div>
+    </div>
+    <div class="settings-group" id="installAppManualSection" style="display:none;">
+      <div class="settings-label">Instalar</div>
+      <div style="font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); line-height:1.6;" id="installAppManualText"></div>
+    </div>
     <div class="settings-group">
       <button class="conta-logout-btn" id="contaLogoutBtn">Sair deste perfil</button>
     </div>
@@ -4546,6 +4555,46 @@
   });
 
   initLogin();
+
+  // ---------- Instalar como app (PWA) ----------
+  let deferredInstallPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    document.getElementById('installAppSection').style.display = 'block';
+    document.getElementById('installAppManualSection').style.display = 'none';
+  });
+  window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    document.getElementById('installAppSection').style.display = 'none';
+    document.getElementById('installAppManualSection').style.display = 'none';
+  });
+  document.getElementById('installAppBtn').addEventListener('click', async () => {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    document.getElementById('installAppSection').style.display = 'none';
+  });
+
+  // navegadores como Safari não disparam beforeinstallprompt — mostra instrução manual nesses casos
+  function showManualInstallInstructionsIfNeeded() {
+    if (deferredInstallPrompt) return; // já tem o botão automático, não precisa do manual
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandalone) return; // já instalado
+    const ua = navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const manualSection = document.getElementById('installAppManualSection');
+    const manualText = document.getElementById('installAppManualText');
+    if (isIOS) {
+      manualText.textContent = 'No iPhone/iPad: toque no ícone de compartilhar (□ com seta pra cima, na barra do Safari) e escolha "Adicionar à Tela de Início".';
+      manualSection.style.display = 'block';
+    } else {
+      manualText.textContent = 'Procure a opção "Instalar app" ou "Adicionar à tela inicial" no menu do seu navegador (geralmente nos três pontinhos ⋮).';
+      manualSection.style.display = 'block';
+    }
+  }
+  setTimeout(showManualInstallInstructionsIfNeeded, 1500); // dá um tempo pro beforeinstallprompt disparar, se for suportado
 
   // Registro do service worker — deixa o app instalável como PWA no celular.
   // Se falhar (ex: rodando de um arquivo local, sem servidor), o app continua funcionando normal.
