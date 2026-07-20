@@ -939,6 +939,7 @@
         <div class="inline-form" id="activityForm">
           <input type="text" id="activityTitleInput" placeholder="Título da atividade">
           <input type="date" id="activityDayInput" style="background-color:var(--panel); border:1px solid var(--line); padding:9px 12px; color:var(--text-primary); font-family:var(--font-body); font-size:13.5px; outline:none;">
+          <input type="time" id="activityHourInput" style="background-color:var(--panel); border:1px solid var(--line); padding:9px 12px; color:var(--text-primary); font-family:var(--font-body); font-size:13.5px; outline:none;" title="Horário (opcional)">
           <select id="activityTypeSelect" style="background-color:var(--panel); border:1px solid var(--line); padding:9px 12px; color:var(--text-primary); font-family:var(--font-utility); font-size:12.5px; outline:none;">
             <option value="Tarefa">Tarefa</option>
             <option value="Evento">Evento</option>
@@ -1220,6 +1221,11 @@
       </div>
       <button class="task-small-btn" id="confirmContaBtn" style="width:100%;">Salvar alterações</button>
       <div id="contaSaveStatus" style="font-family:var(--font-utility); font-size:11px; color:var(--text-muted); margin-top:8px; text-align:center;"></div>
+    </div>
+    <div class="settings-group" id="notifPermSection">
+      <div class="settings-label">Notificações</div>
+      <div id="notifPermStatus" style="font-family:var(--font-utility); font-size:11.5px; color:var(--text-muted); margin-bottom:8px; line-height:1.5;">Verificando...</div>
+      <button class="task-small-btn" id="notifPermBtn" style="width:100%; display:none;">🔔 Ativar notificações neste aparelho</button>
     </div>
     <div class="settings-group" id="installAppSection" style="display:none;">
       <div class="settings-label">Instalar</div>
@@ -1715,6 +1721,10 @@
         <div style="flex:1;"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px;">Tipo</label><select id="taskTypeSelect">${typeOptionsHtml(ev.tipo)}</select></div>
         <div style="flex:1;"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px;">Projeto</label><select id="taskProjSelect">${projOptionsHtml(ev.projeto_id)}</select></div>
       </div>
+      <div class="detail-field" style="display:flex; gap:10px;">
+        <div style="flex:1;"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px;">Data</label><input type="date" id="taskDateInput" value="${ev.data ? String(ev.data).split('T')[0] : ''}" style="width:100%; background-color:var(--panel); border:1px solid var(--line); color:var(--text-primary); padding:8px 10px; font-family:var(--font-body); font-size:13px; outline:none;"></div>
+        <div style="flex:1;"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px;">Horário (opcional)</label><input type="time" id="taskHourInput" value="${normalizeTime(ev.hora)}" style="width:100%; background-color:var(--panel); border:1px solid var(--line); color:var(--text-primary); padding:8px 10px; font-family:var(--font-body); font-size:13px; outline:none;"></div>
+      </div>
       <div class="detail-field">
         <label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px;">Status</label>
         <select id="taskStatusSelect">${statusSelectHtml(ev.status || 'pendente')}</select>
@@ -1742,10 +1752,12 @@
       const newProj = document.getElementById('taskProjSelect').value;
       const newStatus = document.getElementById('taskStatusSelect').value;
       const newDesc = document.getElementById('taskDescInput').value;
+      const newDate = document.getElementById('taskDateInput').value;
+      const newHour = document.getElementById('taskHourInput').value;
       const extraInfoEl = document.getElementById('taskExtraInfoInput');
       const newExtraInfo = extraInfoEl ? extraInfoEl.value.trim() : ev.info_extra;
-      await apiPost('update', 'Cards', ev.id, { tipo: newType, projeto_id: newProj, status: newStatus, descricao: newDesc, info_extra: newExtraInfo || '' });
-      ev.tipo = newType; ev.projeto_id = newProj; ev.status = newStatus; ev.descricao = newDesc; ev.info_extra = newExtraInfo;
+      await apiPost('update', 'Cards', ev.id, { tipo: newType, projeto_id: newProj, status: newStatus, descricao: newDesc, data: newDate, hora: newHour || '', info_extra: newExtraInfo || '' });
+      ev.tipo = newType; ev.projeto_id = newProj; ev.status = newStatus; ev.descricao = newDesc; ev.data = newDate; ev.hora = newHour; ev.info_extra = newExtraInfo;
       document.getElementById('detailEyebrow').textContent = TYPE_TO_LABEL[ev.tipo] || 'Tarefa';
 
       // se marcada como entregue, remove o deadline vinculado automaticamente
@@ -1823,8 +1835,11 @@
     container.innerHTML = `
       <div style="display:flex; flex-direction:column; gap:8px;">
         <input type="date" id="deadlineDateInput" value="${existing ? existing.data : todayStr}">
+        <input type="time" id="deadlineHourInput" value="${existing ? normalizeTime(existing.hora) : ''}" title="Horário (opcional)">
         <select id="deadlineOffsetSelect">
+          <option value="3d">Avisar 3 dias antes</option>
           <option value="1d">Avisar 1 dia antes</option>
+          <option value="6h">Avisar 6 horas antes</option>
           <option value="3h">Avisar 3 horas antes</option>
           <option value="1h">Avisar 1 hora antes</option>
           <option value="15m">Avisar 15 minutos antes</option>
@@ -1839,15 +1854,16 @@
       const btn = document.getElementById('saveDeadlineBtn');
       if (btn.disabled) return;
       const date = document.getElementById('deadlineDateInput').value;
+      const hora = document.getElementById('deadlineHourInput').value;
       const offset = document.getElementById('deadlineOffsetSelect').value;
       if (!date) return;
       btn.disabled = true; btn.textContent = 'Salvando...';
       if (existing) {
-        await apiPost('update', 'Cards', existing.id, { data: date, deadline_alertas: JSON.stringify([offset]) });
+        await apiPost('update', 'Cards', existing.id, { data: date, hora: hora || '', deadline_alertas: JSON.stringify([offset]) });
       } else {
         const res = await apiPost('create', 'Cards', null, {
           tipo: 'deadline', titulo: `Deadline - ${ev.titulo}`, projeto_id: ev.projeto_id,
-          perfil_dono_id: ev.perfil_dono_id || currentProfileId, data: date, hora: '', status: 'pendente',
+          perfil_dono_id: ev.perfil_dono_id || currentProfileId, data: date, hora: hora || '', status: 'pendente',
           card_origem_id: ev.id, deadline_alertas: JSON.stringify([offset])
         });
         if (res && res.result) cardsData.push(res.result);
@@ -2146,11 +2162,11 @@
     detailOverlay.classList.add('open'); detailPanel.classList.add('open');
   }
 
-  async function addActivity(dateStr, title, proj, typeLabel, status) {
+  async function addActivity(dateStr, title, proj, typeLabel, status, hora) {
     const backendType = TYPE_TO_BACKEND[typeLabel] || 'tarefa';
     const payload = {
       tipo: backendType, titulo: title, projeto_id: proj,
-      perfil_dono_id: currentProfileId, data: dateStr, hora: '', status: status || 'pendente'
+      perfil_dono_id: currentProfileId, data: dateStr, hora: hora || '', status: status || 'pendente'
     };
     const res = await apiPost('create', 'Cards', null, payload);
     if (res && res.result) {
@@ -2199,6 +2215,9 @@
       </div>
       <div class="detail-field" style="display:flex; gap:10px;">
         <div style="flex:1;"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px;">Data</label><input type="date" id="advDateInput" value="${prefill.data || ''}" style="width:100%; background-color:var(--panel); border:1px solid var(--line); color:var(--text-primary); padding:8px 10px; font-family:var(--font-body); font-size:13px; outline:none;"></div>
+        <div style="flex:1;"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px;">Horário (opcional)</label><input type="time" id="advHourInput" style="width:100%; background-color:var(--panel); border:1px solid var(--line); color:var(--text-primary); padding:8px 10px; font-family:var(--font-body); font-size:13px; outline:none;"></div>
+      </div>
+      <div class="detail-field">
         <div style="flex:1;"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px;">Status</label><select id="advStatusSelect">${statusSelectHtml('pendente')}</select></div>
       </div>
       <div class="detail-field" id="advExtraInfoWrap" style="display:none;">
@@ -2211,8 +2230,11 @@
         </label>
         <div id="advDeadlineFields" style="display:none; gap:8px; margin-top:8px; align-items:center;">
           <input type="date" id="advDeadlineDate" value="${prefill.data || ''}" style="background-color:var(--panel); border:1px solid var(--line); padding:8px 10px; color:var(--text-primary); font-family:var(--font-body); font-size:13px; outline:none;">
+          <input type="time" id="advDeadlineHour" style="background-color:var(--panel); border:1px solid var(--line); padding:8px 10px; color:var(--text-primary); font-family:var(--font-body); font-size:13px; outline:none;" title="Horário do deadline (opcional)">
           <select id="advDeadlineOffset" style="background-color:var(--panel); border:1px solid var(--line); padding:8px 10px; color:var(--text-primary); font-family:var(--font-utility); font-size:12px; outline:none;">
+            <option value="3d">Avisar 3 dias antes</option>
             <option value="1d">Avisar 1 dia antes</option>
+            <option value="6h">Avisar 6 horas antes</option>
             <option value="3h">Avisar 3 horas antes</option>
             <option value="1h">Avisar 1 hora antes</option>
             <option value="15m">Avisar 15 minutos antes</option>
@@ -2251,10 +2273,11 @@
       const type = document.getElementById('advTypeSelect').value;
       const proj = document.getElementById('advProjSelect').value;
       const status = document.getElementById('advStatusSelect').value;
+      const hora = document.getElementById('advHourInput').value;
       if (!title || !dateVal) { statusEl.textContent = 'Preencha ao menos o título e a data.'; return; }
       btn.disabled = true; btn.textContent = 'Criando...'; statusEl.textContent = '';
       try {
-        const res = await addActivity(dateVal, title, proj, type, status);
+        const res = await addActivity(dateVal, title, proj, type, status, hora);
         if (res && res.error) throw new Error(res.error);
         const novoCard = res && res.result;
         const extraInfo = document.getElementById('advExtraInfoInput').value.trim();
@@ -2264,11 +2287,12 @@
         }
         if (document.getElementById('advDeadlineCheck').checked && novoCard) {
           const deadlineDate = document.getElementById('advDeadlineDate').value;
+          const deadlineHour = document.getElementById('advDeadlineHour').value;
           const offset = document.getElementById('advDeadlineOffset').value;
           if (deadlineDate) {
             const deadlineRes = await apiPost('create', 'Cards', null, {
               tipo: 'deadline', titulo: `Deadline - ${title}`, projeto_id: proj,
-              perfil_dono_id: currentProfileId, data: deadlineDate, hora: '', status: 'pendente',
+              perfil_dono_id: currentProfileId, data: deadlineDate, hora: deadlineHour || '', status: 'pendente',
               card_origem_id: novoCard.id, deadline_alertas: JSON.stringify([offset])
             });
             if (deadlineRes && deadlineRes.error) throw new Error('Atividade criada, mas o deadline falhou: ' + deadlineRes.error);
@@ -2293,13 +2317,15 @@
     const dateVal = dateInput.value;
     const proj = document.getElementById('activityProjSelect').value;
     const type = document.getElementById('activityTypeSelect').value;
+    const hora = document.getElementById('activityHourInput').value;
     if (!title || !dateVal) { if (!dateVal) dateInput.style.borderColor = '#B0453A'; return; }
     dateInput.style.borderColor = '';
     btn.disabled = true; const original = btn.textContent; btn.textContent = 'Criando...';
     try {
-      const res = await addActivity(dateVal, title, proj, type);
+      const res = await addActivity(dateVal, title, proj, type, 'pendente', hora);
       if (res && res.error) throw new Error(res.error);
       document.getElementById('activityTitleInput').value = '';
+      document.getElementById('activityHourInput').value = '';
       activityFormEl.classList.remove('open');
     } finally {
       btn.disabled = false; btn.textContent = original;
@@ -4189,7 +4215,40 @@
     document.getElementById('contaCurrentPinInput').value = '';
     document.getElementById('contaNovoPinInput').value = profile.pin || '';
     document.getElementById('contaSaveStatus').textContent = '';
+    updateNotifPermUI();
   }
+
+  // ---------- Notificações — permissão do navegador (base pro push que vem com o Firebase) ----------
+  function updateNotifPermUI() {
+    const statusEl = document.getElementById('notifPermStatus');
+    const btn = document.getElementById('notifPermBtn');
+    if (!statusEl || !btn) return;
+    if (!('Notification' in window)) {
+      statusEl.textContent = 'Esse navegador não suporta notificações.';
+      btn.style.display = 'none';
+      return;
+    }
+    const perm = Notification.permission;
+    if (perm === 'granted') {
+      statusEl.textContent = `✓ Notificações ativadas neste aparelho, exclusivas pro perfil ${profileName.textContent}. (O envio de verdade ainda depende da configuração do Firebase, em andamento.)`;
+      btn.style.display = 'none';
+    } else if (perm === 'denied') {
+      statusEl.textContent = 'Notificações bloqueadas nesse navegador. Pra reativar, muda isso nas configurações do próprio navegador (ícone de cadeado/informações ao lado da URL > Notificações > Permitir).';
+      btn.style.display = 'none';
+    } else {
+      statusEl.textContent = 'Notificações ainda não ativadas neste aparelho, pra este perfil.';
+      btn.style.display = 'block';
+    }
+  }
+  document.getElementById('notifPermBtn').addEventListener('click', async () => {
+    try {
+      await Notification.requestPermission();
+    } catch (err) { /* alguns navegadores mais antigos usam callback em vez de promise — ok ignorar */ }
+    updateNotifPermUI();
+    // quando o Firebase estiver configurado, é aqui que buscamos o token FCM
+    // e salvamos ele vinculado a este perfil (currentProfileId), pra notificação
+    // chegar só pra quem é dono — não pra todo mundo que usa o mesmo aparelho.
+  });
 
   // ---------- Personalidade do assistente (Padrão / Clô / Ana) ----------
   const CLO_PERSONALITIES = {
