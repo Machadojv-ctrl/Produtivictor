@@ -1122,6 +1122,7 @@
       </svg>
     </div>
     <div class="info"><b id="cloDisplayName">Clô</b><span id="cloDisplaySubtitle">seu assistente</span></div>
+    <button id="cloPanelClose" style="margin-left:auto; border:1px solid var(--line); background:transparent; color:var(--text-muted); width:26px; height:26px; cursor:pointer; font-size:12px;">✕</button>
   </div>
   <div class="clo-body" id="cloBody">
     <div class="clo-msg bot">Pronto quando precisar. Por enquanto só converso — criar tarefas direto por aqui é a próxima etapa.</div>
@@ -1135,6 +1136,7 @@
 
 <div id="settings-overlay"></div>
 <div id="settings-panel">
+  <button class="close-x" id="settingsClose">✕</button>
   <h3 class="settings-title">Configurações</h3>
   <div class="settings-tabs">
     <button class="settings-tab active" data-settings-tab="aparencia">Aparência</button>
@@ -3684,6 +3686,7 @@
   const cloFab = document.getElementById('clo-fab');
   const cloPanel = document.getElementById('clo-panel');
   cloFab.addEventListener('click', () => cloPanel.classList.toggle('open'));
+  document.getElementById('cloPanelClose').addEventListener('click', () => cloPanel.classList.remove('open'));
   const cloBody = document.getElementById('cloBody');
   const cloInput = document.getElementById('cloInput');
   document.getElementById('cloSend').addEventListener('click', sendCloMsg);
@@ -3999,8 +4002,10 @@
   const settingsBtn = document.getElementById('settingsBtn');
   const settingsPanel = document.getElementById('settings-panel');
   const settingsOverlay = document.getElementById('settings-overlay');
+  function closeSettingsPanel() { settingsPanel.classList.remove('open'); settingsOverlay.classList.remove('open'); }
   settingsBtn.addEventListener('click', () => { settingsPanel.classList.add('open'); settingsOverlay.classList.add('open'); });
-  settingsOverlay.addEventListener('click', () => { settingsPanel.classList.remove('open'); settingsOverlay.classList.remove('open'); });
+  settingsOverlay.addEventListener('click', closeSettingsPanel);
+  document.getElementById('settingsClose').addEventListener('click', closeSettingsPanel);
 
   // ---------- Preferências de aparência por perfil ----------
   let currentPrefsId = null;
