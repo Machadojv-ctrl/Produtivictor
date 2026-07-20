@@ -4240,7 +4240,11 @@
         // notificação chegando com o app aberto — o navegador não mostra sozinho nesse caso
         const title = (payload.notification && payload.notification.title) || 'Produtivictor';
         const body = (payload.notification && payload.notification.body) || '';
-        if (Notification.permission === 'granted') new Notification(title, { body, icon: 'icons/icon-192.png' });
+        const isRotina = payload.data && payload.data.tipo === 'rotina';
+        if (Notification.permission === 'granted') {
+          new Notification(title, { body, icon: 'icons/icon-192.png', requireInteraction: isRotina, tag: isRotina ? 'rotina' : undefined });
+          if (isRotina && navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200]);
+        }
       });
     }
   } catch (err) {

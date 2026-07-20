@@ -20,10 +20,15 @@ const messaging = firebase.messaging();
 // notificação chegando com o app fechado/em segundo plano
 messaging.onBackgroundMessage((payload) => {
   const title = (payload.notification && payload.notification.title) || 'Produtivictor';
+  const isRotina = payload.data && payload.data.tipo === 'rotina';
   const options = {
     body: (payload.notification && payload.notification.body) || '',
     icon: 'icons/icon-192.png',
     badge: 'icons/icon-192.png',
+    requireInteraction: isRotina, // rotina fica na tela até você interagir; deadline some sozinho
+    vibrate: isRotina ? [200, 100, 200, 100, 200] : [200],
+    tag: isRotina ? 'rotina' : undefined,
+    renotify: isRotina,
   };
   self.registration.showNotification(title, options);
 });
