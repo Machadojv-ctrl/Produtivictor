@@ -3,7 +3,7 @@
 // então aqui só guardamos em cache a "casca" do app (o HTML/JS/CSS em si).
 
 const CACHE_NAME = 'produtivictor-v1';
-const APP_SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
+const APP_SHELL = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
