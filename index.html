@@ -4251,8 +4251,11 @@
     console.log('Firebase Messaging não pôde ser iniciado:', err.message);
   }
 
+  let registeringPushToken = false;
   async function registerPushToken() {
     if (!fcmMessaging || Notification.permission !== 'granted') return;
+    if (registeringPushToken) return; // já tem uma verificação em andamento, evita duplicar
+    registeringPushToken = true;
     try {
       const swReg = await navigator.serviceWorker.ready;
       const token = await fcmMessaging.getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: swReg });
@@ -4264,6 +4267,8 @@
       }
     } catch (err) {
       console.log('Não foi possível registrar o token de notificação:', err.message);
+    } finally {
+      registeringPushToken = false;
     }
   }
 
