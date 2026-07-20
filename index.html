@@ -3314,10 +3314,48 @@
     row.querySelector('.delete-project').addEventListener('click', () => {
       const existing = row.nextElementSibling;
       if (existing && existing.classList.contains('delete-panel')) { existing.remove(); return; }
-      const panel = document.createElement('div');
-      panel.className = 'delete-panel open';
       const name = row.querySelector('.pname').textContent;
       const color = row.querySelector('.dot').style.background;
+      const project = projectsData.find(p => p.id === id);
+      const isOwner = project && project.dono_perfil_id === currentProfileId;
+      const panel = document.createElement('div');
+      panel.className = 'delete-panel open';
+
+      if (!isOwner) {
+        // não é o dono — só pode sair do projeto, nunca excluir ele pros outros
+        panel.innerHTML = `
+          <div style="font-size:13px; color:var(--text-primary);">Sair do projeto "${name}"? Você não é o dono — isso remove só o seu acesso, o projeto e as atividades continuam existindo normalmente pros outros membros.</div>
+          <div style="display:flex; gap:8px; margin-top:4px;">
+            <button class="danger confirmLeave">Sair do projeto</button>
+            <button class="cancelDelete">Cancelar</button>
+          </div>`;
+        row.after(panel);
+        panel.querySelector('.cancelDelete').addEventListener('click', () => panel.remove());
+        panel.querySelector('.confirmLeave').addEventListener('click', async () => {
+          const btn = panel.querySelector('.confirmLeave');
+          if (btn.disabled) return;
+          btn.disabled = true; btn.textContent = 'Saindo...';
+          try {
+            const members = await apiGet('ProjetoMembros', { projeto_id: id });
+            const rec = members.find(m => m.perfil_id === currentProfileId);
+            if (rec) {
+              const res = await apiPost('delete', 'ProjetoMembros', rec.id);
+              if (res && res.error) throw new Error(res.error);
+            }
+            accessibleProjectIds.delete(id);
+            row.remove();
+            projectsData = projectsData.filter(p => p.id !== id);
+            renderProjectFilters();
+            renderProjectSelect();
+            loadCalendarData(); // resincroniza — as atividades desse projeto somem da sua visão
+          } catch (err) {
+            panel.innerHTML = `<div style="color:#B0453A; font-size:12.5px;">Erro: ${err.message}</div>`;
+          }
+        });
+        return;
+      }
+
+      // é o dono — mantém o fluxo completo, com opção do que fazer com as atividades
       panel.innerHTML = `
         <div style="font-size:13px; color:var(--text-primary);">Excluir "${name}" — o que fazer com as atividades desse projeto?</div>
         <label class="radio-opt"><input type="radio" name="delMode-${id}" value="excluir" checked> Excluir as atividades também</label>
@@ -3363,6 +3401,7 @@
             } else if (mode === 'livre') {
               await apiPostWhere('updateWhere', 'Cards', 'projeto_id', id, { projeto_id: '' });
             }
+            await apiPostWhere('deleteWhere', 'ProjetoMembros', 'projeto_id', id); // tira o acesso de todo mundo, já que o projeto deixa de existir
             await apiPost('delete', 'Projetos', id);
             loadCalendarData(); // recarrega pra refletir os cards movidos/excluídos no calendário
           }
