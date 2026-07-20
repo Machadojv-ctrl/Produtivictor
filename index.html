@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Produtivictor</title>
 <link rel="manifest" href="manifest.json">
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js"></script>
 <meta name="theme-color" content="#131317">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -4219,6 +4221,48 @@
   }
 
   // ---------- Notificações — permissão do navegador (base pro push que vem com o Firebase) ----------
+  const firebaseConfig = {
+    apiKey: "AIzaSyDT-QP7eATa7v8wr9876GyKeeT1O_qX5Gc",
+    authDomain: "produtivictor.firebaseapp.com",
+    projectId: "produtivictor",
+    storageBucket: "produtivictor.firebasestorage.app",
+    messagingSenderId: "736380659169",
+    appId: "1:736380659169:web:52391e10061769e1d01ea0",
+    measurementId: "G-Q5JLXK9HQS"
+  };
+  const FCM_VAPID_KEY = "BK2mXDMWBQOilsrBM9D0DPpXKsnQzrT5FJsfEuneOAZxGRETLxD5khW99TFuY6xopTWbqSftcA7jFu_o-UaNslg";
+  let fcmMessaging = null;
+  try {
+    if (typeof firebase !== 'undefined') {
+      firebase.initializeApp(firebaseConfig);
+      fcmMessaging = firebase.messaging();
+      fcmMessaging.onMessage((payload) => {
+        // notificação chegando com o app aberto — o navegador não mostra sozinho nesse caso
+        const title = (payload.notification && payload.notification.title) || 'Produtivictor';
+        const body = (payload.notification && payload.notification.body) || '';
+        if (Notification.permission === 'granted') new Notification(title, { body, icon: 'icons/icon-192.png' });
+      });
+    }
+  } catch (err) {
+    console.log('Firebase Messaging não pôde ser iniciado:', err.message);
+  }
+
+  async function registerPushToken() {
+    if (!fcmMessaging || Notification.permission !== 'granted') return;
+    try {
+      const swReg = await navigator.serviceWorker.ready;
+      const token = await fcmMessaging.getToken({ vapidKey: FCM_VAPID_KEY, serviceWorkerRegistration: swReg });
+      if (!token) return;
+      const existing = await apiGet('DispositivosPush', { perfil_id: currentProfileId });
+      const already = (existing || []).some(d => d.token === token);
+      if (!already) {
+        await apiPost('create', 'DispositivosPush', null, { perfil_id: currentProfileId, token: token, criado_em: new Date().toISOString() });
+      }
+    } catch (err) {
+      console.log('Não foi possível registrar o token de notificação:', err.message);
+    }
+  }
+
   function updateNotifPermUI() {
     const statusEl = document.getElementById('notifPermStatus');
     const btn = document.getElementById('notifPermBtn');
@@ -4230,8 +4274,9 @@
     }
     const perm = Notification.permission;
     if (perm === 'granted') {
-      statusEl.textContent = `✓ Notificações ativadas neste aparelho, exclusivas pro perfil ${profileName.textContent}. (O envio de verdade ainda depende da configuração do Firebase, em andamento.)`;
+      statusEl.textContent = `✓ Notificações ativadas neste aparelho, exclusivas pro perfil ${profileName.textContent}.`;
       btn.style.display = 'none';
+      registerPushToken();
     } else if (perm === 'denied') {
       statusEl.textContent = 'Notificações bloqueadas nesse navegador. Pra reativar, muda isso nas configurações do próprio navegador (ícone de cadeado/informações ao lado da URL > Notificações > Permitir).';
       btn.style.display = 'none';
@@ -4245,9 +4290,6 @@
       await Notification.requestPermission();
     } catch (err) { /* alguns navegadores mais antigos usam callback em vez de promise — ok ignorar */ }
     updateNotifPermUI();
-    // quando o Firebase estiver configurado, é aqui que buscamos o token FCM
-    // e salvamos ele vinculado a este perfil (currentProfileId), pra notificação
-    // chegar só pra quem é dono — não pra todo mundo que usa o mesmo aparelho.
   });
 
   // ---------- Personalidade do assistente (Padrão / Clô / Ana) ----------

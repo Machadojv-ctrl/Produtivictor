@@ -1,6 +1,32 @@
-// Service worker do Produtivictor — cuida só de deixar o app instalável e abrir
-// mesmo sem internet. Os dados de verdade sempre vêm da API (Google Apps Script),
-// então aqui só guardamos em cache a "casca" do app (o HTML/JS/CSS em si).
+// Service worker do Produtivictor — cuida de deixar o app instalável, abrir
+// mesmo sem internet, e receber notificações push (mesmo com o app fechado).
+// Os dados de verdade sempre vêm da API (Google Apps Script), então aqui só
+// guardamos em cache a "casca" do app (o HTML/JS/CSS em si).
+
+importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js');
+
+firebase.initializeApp({
+  apiKey: "AIzaSyDT-QP7eATa7v8wr9876GyKeeT1O_qX5Gc",
+  authDomain: "produtivictor.firebaseapp.com",
+  projectId: "produtivictor",
+  storageBucket: "produtivictor.firebasestorage.app",
+  messagingSenderId: "736380659169",
+  appId: "1:736380659169:web:52391e10061769e1d01ea0"
+});
+
+const messaging = firebase.messaging();
+
+// notificação chegando com o app fechado/em segundo plano
+messaging.onBackgroundMessage((payload) => {
+  const title = (payload.notification && payload.notification.title) || 'Produtivictor';
+  const options = {
+    body: (payload.notification && payload.notification.body) || '',
+    icon: 'icons/icon-192.png',
+    badge: 'icons/icon-192.png',
+  };
+  self.registration.showNotification(title, options);
+});
 
 const CACHE_NAME = 'produtivictor-v1';
 const APP_SHELL = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
