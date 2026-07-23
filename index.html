@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Produtivictor">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Barlow:wght@400;500&family=Barlow+Condensed:wght@400;500;600&family=Oswald:wght@500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&family=Cormorant:ital,wght@0,500;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Barlow:wght@400;500&family=Barlow+Condensed:wght@400;500;600&family=Oswald:wght@500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&family=Cormorant:ital,wght@0,500;1,500&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,wght@0,500;0,600;1,500&family=Instrument+Serif:ital@0;1&family=Bricolage+Grotesque:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --font-display: 'Fraunces', serif;
@@ -26,10 +26,11 @@
     --proj-b: #6E7A4E;
     --proj-c: #4E5F7A;
     --proj-d: #A6812F;
+    --page-bg-image: none;
   }
 
   [data-theme="chumbo"] {
-    --bg: #131317;
+    --bg: #131317; --bg-rgb: 19,19,23;
     --panel: #191A1F;
     --line: rgba(237,237,234,0.12);
     --line-soft: rgba(237,237,234,0.06);
@@ -40,7 +41,7 @@
     --accent-soft: #A24B3F26;
   }
   [data-theme="claro"] {
-    --bg: #F7F5EF;
+    --bg: #F7F5EF; --bg-rgb: 247,245,239;
     --panel: #FFFFFF;
     --line: rgba(20,19,17,0.13);
     --line-soft: rgba(20,19,17,0.06);
@@ -51,7 +52,7 @@
     --accent-soft: #A24B3F26;
   }
   [data-theme="meia-noite"] {
-    --bg: #0E1420;
+    --bg: #0E1420; --bg-rgb: 14,20,32;
     --panel: #141C2B;
     --line: rgba(203,217,255,0.13);
     --line-soft: rgba(203,217,255,0.06);
@@ -62,7 +63,7 @@
     --accent-soft: #C9A15A26;
   }
   [data-theme="papel"] {
-    --bg: #F1E8D9;
+    --bg: #F1E8D9; --bg-rgb: 241,232,217;
     --panel: #FBF6EC;
     --line: rgba(60,45,25,0.15);
     --line-soft: rgba(60,45,25,0.07);
@@ -73,7 +74,7 @@
     --accent-soft: #6E6B3A26;
   }
   [data-theme="terra"] {
-    --bg: #1F1712;
+    --bg: #1F1712; --bg-rgb: 31,23,18;
     --panel: #29201A;
     --line: rgba(230,210,180,0.14);
     --line-soft: rgba(230,210,180,0.06);
@@ -84,7 +85,7 @@
     --accent-soft: #C97B4A26;
   }
   [data-theme="deserto"] {
-    --bg: #EDE0C8;
+    --bg: #EDE0C8; --bg-rgb: 237,224,200;
     --panel: #F8F1E0;
     --line: rgba(90,65,35,0.16);
     --line-soft: rgba(90,65,35,0.07);
@@ -94,19 +95,8 @@
     --accent: #B5652F;
     --accent-soft: #B5652F26;
   }
-  [data-theme="pastel"] {
-    --bg: #F3EEF7;
-    --panel: #FFFFFF;
-    --line: rgba(90,70,110,0.13);
-    --line-soft: rgba(90,70,110,0.06);
-    --text-primary: #423A4D;
-    --text-muted: #8F84A0;
-    --shadow: 0 16px 40px rgba(90,70,110,0.1);
-    --accent: #C98BA0;
-    --accent-soft: #C98BA026;
-  }
   [data-theme="musgo"] {
-    --bg: #131B15;
+    --bg: #131B15; --bg-rgb: 19,27,21;
     --panel: #1B251D;
     --line: rgba(200,220,190,0.13);
     --line-soft: rgba(200,220,190,0.06);
@@ -116,6 +106,72 @@
     --accent: #8FA968;
     --accent-soft: #8FA96826;
   }
+  [data-theme="vinho"] {
+    --bg: #1A1013; --bg-rgb: 26,16,19;
+    --panel: #241519;
+    --line: rgba(240,225,225,0.13);
+    --line-soft: rgba(240,225,225,0.06);
+    --text-primary: #F1E4E4;
+    --text-muted: #9C8285;
+    --shadow: 0 16px 40px rgba(0,0,0,0.5);
+    --accent: #C25A6B;
+    --accent-soft: #C25A6B26;
+  }
+  [data-theme="oceano"] {
+    --bg: #0C1A1C; --bg-rgb: 12,26,28;
+    --panel: #112427;
+    --line: rgba(205,235,235,0.13);
+    --line-soft: rgba(205,235,235,0.06);
+    --text-primary: #E3F1F1;
+    --text-muted: #7B9C9E;
+    --shadow: 0 16px 40px rgba(0,0,0,0.5);
+    --accent: #4FA8A0;
+    --accent-soft: #4FA8A026;
+  }
+  [data-theme="lavanda"] {
+    --bg: #F2EEF9; --bg-rgb: 242,238,249;
+    --panel: #FFFFFF;
+    --line: rgba(75,55,110,0.13);
+    --line-soft: rgba(75,55,110,0.06);
+    --text-primary: #362C48;
+    --text-muted: #8D82A0;
+    --shadow: 0 16px 40px rgba(75,55,110,0.1);
+    --accent: #7A5FB0;
+    --accent-soft: #7A5FB026;
+  }
+  [data-theme="citrico"] {
+    --bg: #FAF3E3; --bg-rgb: 250,243,227;
+    --panel: #FFFFFF;
+    --line: rgba(27,58,52,0.16);
+    --line-soft: rgba(27,58,52,0.07);
+    --text-primary: #1B3A34;
+    --text-muted: #7C8F79;
+    --shadow: 0 16px 40px rgba(27,58,52,0.12);
+    --accent: #E2572B;
+    --accent-soft: #E2572B26;
+  }
+  [data-theme="ultravioleta"] {
+    --bg: #15111F; --bg-rgb: 21,17,31;
+    --panel: #1E1830;
+    --line: rgba(220,200,255,0.15);
+    --line-soft: rgba(220,200,255,0.07);
+    --text-primary: #EDE4FF;
+    --text-muted: #8E7FB0;
+    --shadow: 0 16px 40px rgba(0,0,0,0.55);
+    --accent: #FF4FA3;
+    --accent-soft: #FF4FA326;
+  }
+  [data-theme="grafite-neon"] {
+    --bg: #101314; --bg-rgb: 16,19,20;
+    --panel: #181C1D;
+    --line: rgba(182,255,60,0.15);
+    --line-soft: rgba(182,255,60,0.06);
+    --text-primary: #E9F5E0;
+    --text-muted: #7C9482;
+    --shadow: 0 16px 40px rgba(0,0,0,0.55);
+    --accent: #B6FF3C;
+    --accent-soft: #B6FF3C26;
+  }
 
   [data-font="fraunces"] { --font-display: 'Fraunces', serif; --font-body: 'Barlow', sans-serif; }
   [data-font="oswald"] { --font-display: 'Oswald', sans-serif; --font-body: 'Barlow', sans-serif; }
@@ -124,14 +180,12 @@
   [data-font="space"] { --font-display: 'Space Grotesk', sans-serif; --font-body: 'Space Grotesk', sans-serif; }
   [data-font="cormorant"] { --font-display: 'Cormorant', serif; --font-body: 'Barlow', sans-serif; }
   [data-font="mono"] { --font-display: 'IBM Plex Mono', monospace; --font-body: 'Barlow', sans-serif; }
-  [data-font="oswald"] .wordmark, [data-font="oswald"] .view-title, [data-font="oswald"] .detail-title,
-  [data-font="oswald"] .clo-header .info b,
-  [data-font="inter"] .wordmark, [data-font="inter"] .view-title, [data-font="inter"] .detail-title,
-  [data-font="inter"] .clo-header .info b,
-  [data-font="space"] .wordmark, [data-font="space"] .view-title, [data-font="space"] .detail-title,
-  [data-font="space"] .clo-header .info b,
-  [data-font="mono"] .wordmark, [data-font="mono"] .view-title, [data-font="mono"] .detail-title,
-  [data-font="mono"] .clo-header .info b { font-style: normal; }
+  [data-font="newsreader"] { --font-display: 'Newsreader', serif; --font-body: 'Barlow', sans-serif; }
+  [data-font="instrument"] { --font-display: 'Instrument Serif', serif; --font-body: 'Inter', sans-serif; }
+  [data-font="bricolage"] { --font-display: 'Bricolage Grotesque', sans-serif; --font-body: 'Bricolage Grotesque', sans-serif; }
+  [data-font="manrope"] { --font-display: 'Manrope', sans-serif; --font-body: 'Manrope', sans-serif; }
+  [data-font="oswald"] .wordmark, [data-font="inter"] .wordmark, [data-font="space"] .wordmark,
+  [data-font="mono"] .wordmark, [data-font="bricolage"] .wordmark, [data-font="manrope"] .wordmark { font-style: normal; }
 
   * { box-sizing: border-box; }
   button:disabled, input:disabled, select:disabled { opacity: 0.5; cursor: not-allowed !important; }
@@ -155,7 +209,7 @@
   .login-profile-card .avatar {
     width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line);
     display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-style: italic; font-size: 15px; flex-shrink: 0;
+    font-family: var(--font-display); font-size: 15px; flex-shrink: 0;
   }
   .login-profile-card .name { font-size: 15px; font-weight: 500; }
   .login-profile-card .lock { margin-left: auto; color: var(--text-muted); font-size: 13px; }
@@ -181,7 +235,7 @@
   }
   .login-new-btn:hover { border-color: var(--accent); color: var(--accent); }
   #loginPinPrompt, #loginNewProfileForm { display: flex; flex-direction: column; gap: 10px; }
-  .login-pin-name { font-family: var(--font-display); font-style: italic; font-size: 18px; margin-bottom: 4px; }
+  .login-pin-name { font-family: var(--font-display); font-size: 18px; margin-bottom: 4px; }
   #loginPinPrompt input, #loginNewProfileForm input {
     background: transparent; border: 1px solid var(--line); color: var(--text-primary);
     padding: 11px 14px; font-family: var(--font-body); font-size: 15px; outline: none; text-align: center;
@@ -197,9 +251,35 @@
     font-family: var(--font-body); font-weight: 400;
     -webkit-font-smoothing: antialiased;
   }
+  body.has-page-bg { background: var(--bg); }
+  body.has-page-bg::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(var(--bg-rgb), 0.2), rgba(var(--bg-rgb), 0.2)), var(--page-bg-image);
+    background-size: cover; background-position: center; background-attachment: fixed;
+  }
+  body.has-page-bg .view-title, body.has-page-bg .view-desc,
+  body.has-page-bg .cal-month-label, body.has-page-bg .kanban-block-title {
+    background: rgba(var(--bg-rgb), 0.5);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    padding: 3px 10px; border-radius: 999px; display: inline-block;
+  }
+  body.has-page-bg .chip {
+    background: rgba(var(--bg-rgb), 0.5);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    padding: 4px 11px; border-radius: 999px;
+  }
+  body.has-page-bg .view-head { align-items: center; }
+  body.has-page-bg header:not(.has-image) {
+    background: rgba(var(--bg-rgb), 0.5);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  body.has-page-bg nav#sidebar {
+    background: rgba(var(--bg-rgb), 0.5);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
   button, input { font-family: inherit; }
 
-  #shell { display: flex; flex-direction: column; height: 100vh; }
+  #shell { display: flex; flex-direction: column; height: 100vh; position: relative; z-index: 1; }
 
   /* ---------- HEADER ---------- */
   header {
@@ -227,6 +307,26 @@
   }
   header.has-image .icon-btn { color: #F7F3EC; }
   .icon-btn:hover { border-color: var(--line); color: var(--accent); }
+
+  #notif-panel {
+    position: fixed; top: 60px; right: 20px; width: 340px; max-width: calc(100vw - 32px); max-height: 70vh;
+    background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow); z-index: 65;
+    display: none; flex-direction: column; overflow: hidden;
+  }
+  #notif-panel.open { display: flex; }
+  .notif-panel-header {
+    display: flex; align-items: center; justify-content: space-between; padding: 14px 16px;
+    border-bottom: 1px solid var(--line); font-family: var(--font-display); font-size: 15px;
+  }
+  .notif-panel-header button { border: none; background: transparent; color: var(--text-muted); cursor: pointer; font-size: 13px; }
+  .notif-section { padding: 12px 16px; border-bottom: 1px solid var(--line-soft); overflow-y: auto; }
+  .notif-section:last-child { border-bottom: none; }
+  .notif-section-title { font-family: var(--font-utility); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+  .notif-row { padding: 7px 0; font-size: 12.5px; border-bottom: 1px solid var(--line-soft); cursor: pointer; }
+  .notif-row:last-child { border-bottom: none; }
+  .notif-row.unread { position: relative; padding-left: 12px; }
+  .notif-row.unread::before { content: ''; position: absolute; left: 0; top: 12px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+  .notif-empty { font-size: 12px; color: var(--text-muted); font-style: italic; }
 
   /* ---------- BODY ROW ---------- */
   #body-row { display: flex; flex: 1; min-height: 0; }
@@ -297,7 +397,7 @@
     width: 20px; height: 20px; border-radius: 50%;
     border: 1px solid var(--line); color: var(--text-primary);
     display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-style: italic;
+    font-family: var(--font-display);
     font-size: 11px; flex-shrink: 0;
   }
   nav.icons-only .nav-profile .name { display: none; }
@@ -309,7 +409,7 @@
   @keyframes fadeIn { from { opacity:0; transform: translateY(5px);} to { opacity:1; transform:translateY(0);} }
 
   .view-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; flex-wrap: wrap; gap: 10px; }
-  .view-title { font-family: var(--font-display); font-size: 30px; font-weight: 500; font-style: italic; margin: 0; }
+  .view-title { font-family: var(--font-display); font-size: 30px; font-weight: 500; margin: 0; }
   .view-desc { color: var(--text-muted); font-size: 13px; margin: 0 0 30px 0; }
   .view-action {
     border: 1px solid var(--line); background: transparent; color: var(--text-primary);
@@ -326,7 +426,8 @@
     color: var(--text-primary); transition: opacity .2s ease;
   }
   .chip .dot { width: 7px; height: 7px; border-radius: 50%; }
-  .chip.off { opacity: 0.28; }
+  .chip.active { color: var(--accent); font-weight: 600; }
+  .chip.active::after { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-left: 2px; }
 
   .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: var(--line-soft); border: 1px solid var(--line); width: calc(100% + 24px); margin-left: -12px; overflow: hidden; }
   .cal-grid.agenda-mode { display: block; background: none; border: none; width: 100%; margin-left: 0; }
@@ -340,7 +441,7 @@
   @media (min-width: 561px) {
     .cal-cell { min-height: 132px; }
   }
-  .cal-cell .num { font-family: var(--font-display); font-style: italic; color: var(--text-muted); font-size: 14px; }
+  .cal-cell .num { font-family: var(--font-display); color: var(--text-muted); font-size: 14px; }
   .cal-cell.faded { opacity: 0.3; }
   .cal-cell.today { background: var(--accent-soft); position: relative; }
   .cal-cell.today .num { color: var(--accent); font-weight: 600; }
@@ -349,7 +450,7 @@
     width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
   }
   .cal-month-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-  .cal-month-label { font-family: var(--font-display); font-style: italic; font-size: 17px; min-width: 160px; }
+  .cal-month-label { font-family: var(--font-display); font-size: 17px; min-width: 160px; }
   .cal-nav-btn {
     width: 28px; height: 28px; border: 1px solid var(--line); background: transparent; color: var(--text-primary);
     cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center;
@@ -375,8 +476,9 @@
   .kanban-block-title { font-family: var(--font-utility); font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); }
   .kanban-row { display: flex; gap: 1px; background: var(--line-soft); border: 1px solid var(--line-soft); overflow-x: auto; }
   .kanban-col { min-width: 230px; background: var(--bg); padding: 14px; }
-  .kanban-col h4 { font-family: var(--font-utility); font-size: 11px; letter-spacing: .6px; color: var(--text-muted); margin: 0; text-transform: uppercase; }
-  .kanban-col-head { display: flex; align-items: center; justify-content: space-between; margin: -14px -14px 12px -14px; padding: 10px 14px; border-radius: 2px 2px 0 0; transition: background-color .2s ease, color .2s ease; }
+  .kanban-col h4 { font-family: var(--font-utility); font-size: 11px; letter-spacing: .6px; color: var(--text-muted); margin: 0; text-transform: uppercase; display: flex; align-items: center; }
+  .kanban-col-head .col-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-right: 8px; }
+  .kanban-col-head { display: flex; align-items: center; justify-content: space-between; margin: -14px -14px 12px -14px; padding: 10px 14px 9px 14px; border-bottom: 2px solid var(--line-soft); transition: border-color .2s ease, color .2s ease; }
   .kanban-col-head .row-actions { opacity: 0; transition: opacity .15s ease; }
   .kanban-col:hover .kanban-col-head .row-actions { opacity: 1; }
   .kanban-col-add { display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; }
@@ -579,7 +681,7 @@
   }
   .profile-opt:hover { color: var(--text-primary); background: var(--line-soft); }
   .profile-opt.current { color: var(--accent); }
-  .profile-opt .avatar { width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-style: italic; font-size: 11px; flex-shrink: 0; }
+  .profile-opt .avatar { width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 11px; flex-shrink: 0; }
 
   /* ---------- TIMER ---------- */
   .timer-wrap { display: flex; flex-direction: column; align-items: center; padding: 20px 0 10px; }
@@ -604,7 +706,7 @@
     mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
     transition: background 0.3s linear;
   }
-  .timer-digits { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 56px; letter-spacing: 1px; z-index: 1; }
+  .timer-digits { font-family: var(--font-display); font-weight: 500; font-size: 56px; letter-spacing: 1px; z-index: 1; }
   .timer-label { font-family: var(--font-utility); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-top: 8px; z-index: 1; }
 
   .timer-custom { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
@@ -632,7 +734,7 @@
   .timer-btn:hover:not(.primary) { border-color: var(--text-muted); }
 
   .timer-sessions { margin-top: 34px; font-family: var(--font-utility); font-size: 11.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-  .timer-sessions b { color: var(--accent); font-family: var(--font-display); font-style: italic; font-size: 14px; }
+  .timer-sessions b { color: var(--accent); font-family: var(--font-display); font-weight: 600; font-size: 14px; }
 
   /* ---------- MODAIS / PAINÉIS LATERAIS ---------- */
   #detail-overlay, #settings-overlay {
@@ -653,7 +755,7 @@
   #detail-panel.open, #settings-panel.open { transform: translateX(0); }
 
   .detail-eyebrow, .settings-label { font-family: var(--font-utility); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
-  .detail-title { font-family: var(--font-display); font-size: 22px; font-style: italic; font-weight: 500; margin: 0 0 20px 0; }
+  .detail-title { font-family: var(--font-display); font-size: 22px; font-weight: 500; margin: 0 0 20px 0; }
   .detail-field { margin-bottom: 18px; }
   .detail-field label { display:block; font-family: var(--font-utility); font-size: 10.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
   .detail-field .val { font-size: 13.5px; }
@@ -733,7 +835,7 @@
   }
   .day-add-row button:hover { background: var(--accent); color: var(--bg); }
 
-  .settings-title { font-family: var(--font-display); font-size: 18px; font-style: italic; margin: 0 0 24px 0; }
+  .settings-title { font-family: var(--font-display); font-size: 18px; margin: 0 0 24px 0; }
   .settings-group { margin-bottom: 26px; }
   .settings-tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
   .settings-tab {
@@ -766,20 +868,23 @@
   .opt-btn.active { border-color: var(--accent); color: var(--accent); }
   .theme-swatch { display: flex; align-items: center; gap: 7px; }
   .theme-swatch .sw { width: 11px; height: 11px; border-radius: 50%; border: 1px solid var(--line); }
+  .header-preset-swatch { width: 46px; height: 32px; border-radius: 2px; border: 1px solid var(--line); cursor: pointer; transition: border-color .2s ease, transform .15s ease; }
+  .header-preset-swatch:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .header-preset-swatch.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 
   /* ---------- CLÔ ---------- */
   #clo-fab {
     position: fixed; bottom: 26px; right: 26px; z-index: 50;
-    width: 50px; height: 50px; border-radius: 50%;
+    width: 50px; height: 50px; border-radius: 16px;
     background: var(--accent); color: var(--bg);
     display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: 14px;
+    font-family: var(--font-display); font-weight: 600; font-size: 14px;
     box-shadow: var(--shadow); cursor: pointer; transition: transform .2s ease;
   }
   #clo-fab:hover { transform: scale(1.08); }
   #clo-panel {
     position: fixed; bottom: 86px; right: 26px; z-index: 50;
-    width: 300px; max-height: 420px;
+    width: 300px; max-height: 420px; border-radius: 6px; overflow: hidden;
     background: var(--panel); border: 1px solid var(--line);
     box-shadow: var(--shadow); display: flex; flex-direction: column;
     transform: translateY(14px) scale(0.97); opacity: 0; pointer-events: none;
@@ -787,8 +892,8 @@
   }
   #clo-panel.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
   .clo-header { display: flex; align-items: center; gap: 10px; padding: 15px 16px; border-bottom: 1px solid var(--line-soft); }
-  .clo-header .badge-clo { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-style: italic; color: var(--bg); font-size: 12px; }
-  .clo-header .info b { display: block; font-size: 13px; font-family: var(--font-display); font-style: italic; }
+  .clo-header .badge-clo { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); color: var(--bg); font-size: 12px; }
+  .clo-header .info b { display: block; font-size: 13px; font-family: var(--font-display); font-weight: 600; }
   .clo-header .info span { font-size: 10px; color: var(--text-muted); font-family: var(--font-utility); text-transform: uppercase; letter-spacing: 0.4px; }
   .clo-body { flex: 1; padding: 14px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; }
   .clo-msg { font-size: 12.5px; line-height: 1.5; max-width: 85%; padding: 8px 12px; }
@@ -822,6 +927,7 @@
 
     /* painéis flutuantes viram tela cheia — nada de faixa lateral apertada */
     #clo-panel { width: 100%; height: 100%; right: 0; bottom: 0; border-radius: 0; }
+    #notif-panel { width: 100%; max-width: 100%; top: 0; right: 0; height: 100%; max-height: 100%; }
     #settings-panel, #detail-panel {
       width: 100%; max-width: 100%; padding: 22px 18px 90px 18px;
     }
@@ -889,6 +995,28 @@
         <div class="header-sub" id="headerDate">—</div>
       </div>
       <div class="header-actions">
+        <div class="icon-btn" id="notifBellBtn" title="Notificações" style="position:relative;">
+          🔔
+          <span id="notifBellBadge" style="display:none; position:absolute; top:-2px; right:-2px; background:var(--accent); color:#fff; font-size:9px; font-family:var(--font-utility); min-width:15px; height:15px; border-radius:8px; align-items:center; justify-content:center; padding:0 3px;"></span>
+        </div>
+        <div id="notif-panel">
+          <div class="notif-panel-header">
+            <b>Notificações</b>
+            <button id="notifPanelClose">✕</button>
+          </div>
+          <div class="notif-section">
+            <div class="notif-section-title" id="notifTodayTitle">Hoje</div>
+            <div id="notifTodayList"></div>
+          </div>
+          <div class="notif-section">
+            <div class="notif-section-title" id="notifDeadlinesTitle">Deadlines próximos</div>
+            <div id="notifDeadlinesList"></div>
+          </div>
+          <div class="notif-section">
+            <div class="notif-section-title" id="notifActivityTitle">Atividade</div>
+            <div id="notifActivityList"></div>
+          </div>
+        </div>
         <label class="icon-btn" title="Trocar imagem do header" style="cursor:pointer;">
           🖼
           <input type="file" accept="image/*" id="headerImgInput" style="display:none;">
@@ -1164,8 +1292,13 @@
         <div class="opt-btn" data-theme-opt="papel"><span class="theme-swatch"><span class="sw" style="background:#F1E8D9"></span>Papel</span></div>
         <div class="opt-btn" data-theme-opt="terra"><span class="theme-swatch"><span class="sw" style="background:#1F1712"></span>Terra</span></div>
         <div class="opt-btn" data-theme-opt="deserto"><span class="theme-swatch"><span class="sw" style="background:#EDE0C8"></span>Deserto</span></div>
-        <div class="opt-btn" data-theme-opt="pastel"><span class="theme-swatch"><span class="sw" style="background:#F3EEF7"></span>Pastel</span></div>
         <div class="opt-btn" data-theme-opt="musgo"><span class="theme-swatch"><span class="sw" style="background:#131B15"></span>Musgo</span></div>
+        <div class="opt-btn" data-theme-opt="vinho"><span class="theme-swatch"><span class="sw" style="background:#1A1013"></span>Vinho</span></div>
+        <div class="opt-btn" data-theme-opt="oceano"><span class="theme-swatch"><span class="sw" style="background:#0C1A1C"></span>Oceano</span></div>
+        <div class="opt-btn" data-theme-opt="lavanda"><span class="theme-swatch"><span class="sw" style="background:#F2EEF9"></span>Lavanda</span></div>
+        <div class="opt-btn" data-theme-opt="citrico"><span class="theme-swatch"><span class="sw" style="background:#FAF3E3"></span>Cítrico</span></div>
+        <div class="opt-btn" data-theme-opt="ultravioleta"><span class="theme-swatch"><span class="sw" style="background:#15111F"></span>Ultravioleta</span></div>
+        <div class="opt-btn" data-theme-opt="grafite-neon"><span class="theme-swatch"><span class="sw" style="background:#101314"></span>Grafite Neon</span></div>
       </div>
     </div>
     <div class="settings-group">
@@ -1194,11 +1327,50 @@
         <div class="opt-btn" data-font-opt="space">Space Grotesk</div>
         <div class="opt-btn" data-font-opt="cormorant">Cormorant</div>
         <div class="opt-btn" data-font-opt="mono">Plex Mono</div>
+        <div class="opt-btn" data-font-opt="newsreader">Newsreader</div>
+        <div class="opt-btn" data-font-opt="instrument">Instrument Serif</div>
+        <div class="opt-btn" data-font-opt="bricolage">Bricolage</div>
+        <div class="opt-btn" data-font-opt="manrope">Manrope</div>
       </div>
     </div>
     <div class="settings-group">
-      <div class="settings-label">Imagem do header</div>
+      <div class="settings-label">Fundo do cabeçalho</div>
       <div class="option-row"><div class="opt-btn" id="clearHeaderImg">Remover imagem</div></div>
+      <div class="settings-label" style="margin-top:16px;">Estilos prontos (cabeçalho)</div>
+      <div class="option-row" id="headerPresetRow">
+        <div class="header-preset-swatch" data-preset-idx="0" title="Horizonte Suave" style="background:radial-gradient(ellipse 60% 40% at 50% 75%, rgba(120,120,120,0.18) 0%, transparent 70%), linear-gradient(180deg, #f2f1ee 0%, #e9e7e2 100%)"></div>
+        <div class="header-preset-swatch" data-preset-idx="1" title="Vinho Difuso" style="background:radial-gradient(circle at 60% 35%, rgba(216,70,40,0.5) 0%, rgba(216,70,40,0.15) 35%, transparent 65%), linear-gradient(180deg, #faf8f5 0%, #f3f0ea 100%)"></div>
+        <div class="header-preset-swatch" data-preset-idx="2" title="Névoa Azul" style="background:radial-gradient(circle at 30% 30%, rgba(150,170,200,0.35) 0%, transparent 60%), radial-gradient(circle at 70% 70%, rgba(190,180,200,0.3) 0%, transparent 55%), linear-gradient(160deg, #f5f4f2 0%, #eceae6 100%)"></div>
+        <div class="header-preset-swatch" data-preset-idx="3" title="Bruma Dourada" style="background:radial-gradient(circle at 65% 40%, rgba(220,180,120,0.4) 0%, transparent 60%), linear-gradient(160deg, #faf6ee 0%, #f0e9da 100%)"></div>
+        <div class="header-preset-swatch" data-preset-idx="4" title="Papel Cru" style="background:radial-gradient(circle at 50% 20%, rgba(0,0,0,0.04) 0%, transparent 60%), linear-gradient(180deg, #f7f5f0 0%, #f0ede5 100%)"></div>
+        <div class="header-preset-swatch" data-preset-idx="5" title="Sombra Suave" style="background:radial-gradient(circle at 40% 60%, rgba(255,255,255,0.07) 0%, transparent 55%), linear-gradient(180deg, #14161a 0%, #1d2026 100%)"></div>
+        <div class="header-preset-swatch" data-preset-idx="6" title="Musgo Difuso" style="background:radial-gradient(circle at 60% 30%, rgba(140,170,120,0.32) 0%, transparent 60%), linear-gradient(160deg, #171d17 0%, #232b21 100%)"></div>
+        <div class="header-preset-swatch" data-preset-idx="7" title="Terracota Bruma" style="background:radial-gradient(circle at 35% 65%, rgba(190,110,80,0.38) 0%, transparent 60%), linear-gradient(160deg, #221510 0%, #33221a 100%)"></div>
+        <div class="header-preset-swatch" data-preset-idx="8" title="Violeta Bruma" style="background:radial-gradient(circle at 70% 30%, rgba(160,120,220,0.35) 0%, transparent 60%), linear-gradient(160deg, #17121f 0%, #241a30 100%)"></div>
+        <div class="header-preset-swatch" data-preset-idx="9" title="Ecrã Noturno" style="background:radial-gradient(circle at 50% 25%, rgba(120,140,180,0.2) 0%, transparent 65%), linear-gradient(180deg, #0b0d10 0%, #14171b 100%)"></div>
+      </div>
+    </div>
+    <div class="settings-group">
+      <div class="settings-label">Fundo da página (app inteiro)</div>
+      <div class="option-row">
+        <div class="opt-btn" id="clearPageBg">Remover fundo</div>
+      </div>
+      <div class="option-row" id="pageBgPresetRow" style="margin-top:8px;">
+        <div class="header-preset-swatch" data-page-preset-idx="0" title="Horizonte Suave" style="background:radial-gradient(ellipse 60% 40% at 50% 75%, rgba(120,120,120,0.18) 0%, transparent 70%), linear-gradient(180deg, #f2f1ee 0%, #e9e7e2 100%)"></div>
+        <div class="header-preset-swatch" data-page-preset-idx="1" title="Vinho Difuso" style="background:radial-gradient(circle at 60% 35%, rgba(216,70,40,0.5) 0%, rgba(216,70,40,0.15) 35%, transparent 65%), linear-gradient(180deg, #faf8f5 0%, #f3f0ea 100%)"></div>
+        <div class="header-preset-swatch" data-page-preset-idx="2" title="Névoa Azul" style="background:radial-gradient(circle at 30% 30%, rgba(150,170,200,0.35) 0%, transparent 60%), radial-gradient(circle at 70% 70%, rgba(190,180,200,0.3) 0%, transparent 55%), linear-gradient(160deg, #f5f4f2 0%, #eceae6 100%)"></div>
+        <div class="header-preset-swatch" data-page-preset-idx="3" title="Bruma Dourada" style="background:radial-gradient(circle at 65% 40%, rgba(220,180,120,0.4) 0%, transparent 60%), linear-gradient(160deg, #faf6ee 0%, #f0e9da 100%)"></div>
+        <div class="header-preset-swatch" data-page-preset-idx="4" title="Papel Cru" style="background:radial-gradient(circle at 50% 20%, rgba(0,0,0,0.04) 0%, transparent 60%), linear-gradient(180deg, #f7f5f0 0%, #f0ede5 100%)"></div>
+        <div class="header-preset-swatch" data-page-preset-idx="5" title="Sombra Suave" style="background:radial-gradient(circle at 40% 60%, rgba(255,255,255,0.07) 0%, transparent 55%), linear-gradient(180deg, #14161a 0%, #1d2026 100%)"></div>
+        <div class="header-preset-swatch" data-page-preset-idx="6" title="Musgo Difuso" style="background:radial-gradient(circle at 60% 30%, rgba(140,170,120,0.32) 0%, transparent 60%), linear-gradient(160deg, #171d17 0%, #232b21 100%)"></div>
+        <div class="header-preset-swatch" data-page-preset-idx="7" title="Terracota Bruma" style="background:radial-gradient(circle at 35% 65%, rgba(190,110,80,0.38) 0%, transparent 60%), linear-gradient(160deg, #221510 0%, #33221a 100%)"></div>
+        <div class="header-preset-swatch" data-page-preset-idx="8" title="Violeta Bruma" style="background:radial-gradient(circle at 70% 30%, rgba(160,120,220,0.35) 0%, transparent 60%), linear-gradient(160deg, #17121f 0%, #241a30 100%)"></div>
+        <div class="header-preset-swatch" data-page-preset-idx="9" title="Ecrã Noturno" style="background:radial-gradient(circle at 50% 25%, rgba(120,140,180,0.2) 0%, transparent 65%), linear-gradient(180deg, #0b0d10 0%, #14171b 100%)"></div>
+      </div>
+      <div class="option-row" style="margin-top:8px;">
+        <label class="opt-btn" style="cursor:pointer;">Enviar imagem<input type="file" accept="image/*" id="pageBgImgInput" style="display:none;"></label>
+      </div>
+      <div style="font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); margin-top:8px; line-height:1.5;">O app vira um quadro com borda flutuando sobre o fundo, mantendo o texto sempre legível.</div>
     </div>
     <div class="settings-group">
       <button class="task-small-btn" id="confirmAppearanceBtn" style="width:100%;">Confirmar mudanças</button>
@@ -1394,7 +1566,7 @@
       `<div class="chip" data-proj="${p.id}"><span class="dot" style="background:${p.cor}"></span>${p.nome}</div>`
     ).join('');
     wrap.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => { chip.classList.toggle('off'); renderCalendar(); });
+      chip.addEventListener('click', () => { chip.classList.toggle('active'); renderCalendar(); });
     });
   }
 
@@ -1404,8 +1576,24 @@
       `<div class="chip" data-status="${s.value}">${s.emoji} ${s.label}</div>`
     ).join('');
     wrap.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => { chip.classList.toggle('off'); renderCalendar(); });
+      chip.addEventListener('click', () => { chip.classList.toggle('active'); renderCalendar(); });
     });
+  }
+
+  // Filtro por "isolamento": nenhum chip marcado = mostra tudo. Um ou mais chips
+  // marcados num grupo = mostra só o que bate com ALGUM deles nesse grupo. Os dois
+  // grupos (projeto e status) são independentes entre si e se combinam com E lógico
+  // — ex: "ABCR" + "Pendente" marcados mostra só tarefas pendentes da ABCR.
+  function getActiveFilters() {
+    return {
+      projs: Array.from(document.querySelectorAll('#projectFilters .chip.active')).map(c => c.dataset.proj),
+      statuses: Array.from(document.querySelectorAll('#statusFilters .chip.active')).map(c => c.dataset.status),
+    };
+  }
+  function cardPassesFilters(ev, filters) {
+    if (filters.projs.length && !filters.projs.includes(ev.projeto_id)) return false;
+    if (filters.statuses.length && !filters.statuses.includes(ev.status || 'pendente')) return false;
+    return true;
   }
 
   function renderProjectSelect() {
@@ -1427,9 +1615,162 @@
       renderProjectsView();
       renderCalendar();
       calStatusMsg.textContent = 'Visão do mês, filtrada por projeto';
+      maybeShowDailySummary();
     } catch (err) {
       calStatusMsg.innerHTML = `<span style="color:#B0453A;">Não foi possível carregar a API (${err.message}). Verifique a URL em API_URL.</span>`;
     }
+  }
+
+  // ---------- Central de notificações ----------
+  let notificacoesData = [];
+
+  async function loadNotifications() {
+    try {
+      notificacoesData = await apiGet('Notificacoes', { perfil_id: currentProfileId });
+      notificacoesData.sort((a, b) => new Date(b.criado_em) - new Date(a.criado_em));
+      updateNotifBadge();
+    } catch (err) {
+      console.log('Não foi possível carregar notificações:', err.message);
+    }
+  }
+
+  function updateNotifBadge() {
+    const badge = document.getElementById('notifBellBadge');
+    if (!badge) return;
+    const unread = notificacoesData.filter(n => n.lida !== true && n.lida !== 'true').length;
+    if (unread > 0) {
+      badge.textContent = unread > 9 ? '9+' : String(unread);
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  function renderNotifPanel() {
+    const now = new Date();
+    const todayCards = cardsData.filter(c => {
+      const d = parseCardDate(c);
+      return d && d.year === now.getFullYear() && d.month === now.getMonth() && d.day === now.getDate();
+    });
+    const in3days = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+    const upcomingDeadlines = cardsData.filter(c => {
+      if (c.tipo !== 'deadline') return false;
+      const d = parseCardDate(c);
+      if (!d) return false;
+      const dt = new Date(d.year, d.month, d.day);
+      return dt >= now && dt <= in3days;
+    });
+
+    document.getElementById('notifTodayTitle').textContent = `Hoje (${todayCards.length})`;
+    document.getElementById('notifTodayList').innerHTML = todayCards.length
+      ? todayCards.map(c => `<div class="notif-row" data-card-id="${c.id}">${TYPE_EMOJI[c.tipo]||''} ${c.titulo} ${statusEmoji(c.status)}</div>`).join('')
+      : `<div class="notif-empty">Nada marcado pra hoje.</div>`;
+
+    document.getElementById('notifDeadlinesTitle').textContent = `Deadlines próximos (${upcomingDeadlines.length})`;
+    document.getElementById('notifDeadlinesList').innerHTML = upcomingDeadlines.length
+      ? upcomingDeadlines.map(c => `<div class="notif-row" data-card-id="${c.id}">⏰ ${c.titulo} — ${c.data.split('T')[0]}</div>`).join('')
+      : `<div class="notif-empty">Nenhum nos próximos 3 dias.</div>`;
+
+    document.getElementById('notifActivityTitle').textContent = `Atividade (${notificacoesData.length})`;
+    document.getElementById('notifActivityList').innerHTML = notificacoesData.length
+      ? notificacoesData.slice(0, 20).map(n => `
+          <div class="notif-row ${n.lida === true || n.lida === 'true' ? '' : 'unread'}" data-notif-id="${n.id}" data-card-id="${n.card_id || ''}">
+            <b>${n.titulo}</b><br>${n.mensagem}
+          </div>`).join('')
+      : `<div class="notif-empty">Nenhuma atividade recente.</div>`;
+
+    document.querySelectorAll('#notifTodayList .notif-row, #notifDeadlinesList .notif-row').forEach(row => {
+      row.style.cursor = 'pointer';
+      row.addEventListener('click', () => {
+        const card = cardsData.find(c => c.id === row.dataset.cardId);
+        if (card) { closeNotifPanel(); openTaskDetail(card, () => {}); }
+      });
+    });
+    document.querySelectorAll('#notifActivityList .notif-row').forEach(row => {
+      row.addEventListener('click', async () => {
+        const notif = notificacoesData.find(n => n.id === row.dataset.notifId);
+        if (notif && notif.lida !== true && notif.lida !== 'true') {
+          notif.lida = true;
+          row.classList.remove('unread');
+          updateNotifBadge();
+          apiPost('update', 'Notificacoes', notif.id, { lida: true });
+        }
+        if (row.dataset.cardId) {
+          const card = await apiGet('Cards', { id: row.dataset.cardId });
+          if (card && card[0]) { closeNotifPanel(); openTaskDetail(card[0], () => {}); }
+        }
+      });
+    });
+  }
+
+  function closeNotifPanel() { document.getElementById('notif-panel').classList.remove('open'); }
+  document.getElementById('notifBellBtn').addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const panel = document.getElementById('notif-panel');
+    const willOpen = !panel.classList.contains('open');
+    if (willOpen) {
+      await loadNotifications();
+      renderNotifPanel();
+      panel.classList.add('open');
+    } else {
+      panel.classList.remove('open');
+    }
+  });
+  document.getElementById('notifPanelClose').addEventListener('click', closeNotifPanel);
+  document.addEventListener('click', (e) => {
+    const panel = document.getElementById('notif-panel');
+    if (panel.classList.contains('open') && !panel.contains(e.target) && e.target.id !== 'notifBellBtn') closeNotifPanel();
+  });
+
+
+  function maybeShowDailySummary() {
+    const now = new Date();
+    if (now.getHours() < 7) return; // evita disparar se abrir o app de madrugada
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    const key = 'produtivictor_daily_summary_' + currentProfileId;
+    if (localStorage.getItem(key) === todayStr) return; // já mostrou hoje, neste aparelho
+    localStorage.setItem(key, todayStr);
+    showDailySummaryPanel(now);
+  }
+
+  function showDailySummaryPanel(now) {
+    const todayCards = cardsData.filter(c => {
+      const d = parseCardDate(c);
+      return d && d.year === now.getFullYear() && d.month === now.getMonth() && d.day === now.getDate();
+    });
+    const in3days = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+    const upcomingDeadlines = cardsData.filter(c => {
+      if (c.tipo !== 'deadline') return false;
+      const d = parseCardDate(c);
+      if (!d) return false;
+      const dt = new Date(d.year, d.month, d.day);
+      return dt >= now && dt <= in3days;
+    });
+
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.65); display:flex; align-items:center; justify-content:center; padding:20px;';
+    const box = document.createElement('div');
+    box.style.cssText = 'background:var(--panel); border:1px solid var(--line); max-width:420px; width:100%; padding:26px; max-height:82vh; overflow:auto; box-shadow:var(--shadow);';
+
+    let html = `<div style="font-family:var(--font-display); font-style:italic; font-size:22px;">Bom dia${profileName && profileName.textContent ? ', ' + profileName.textContent : ''}.</div>`;
+    html += `<div style="font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:22px;">Resumo de hoje</div>`;
+
+    html += `<div style="font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">Hoje (${todayCards.length})</div>`;
+    html += todayCards.length
+      ? todayCards.map(c => `<div style="padding:8px 0; border-bottom:1px solid var(--line-soft); font-size:13.5px;">${TYPE_EMOJI[c.tipo]||''} ${c.titulo} ${statusEmoji(c.status)}</div>`).join('')
+      : `<div style="font-size:13px; color:var(--text-muted); font-style:italic;">Nada marcado pra hoje.</div>`;
+
+    html += `<div style="font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin:22px 0 8px;">Deadlines próximos (${upcomingDeadlines.length})</div>`;
+    html += upcomingDeadlines.length
+      ? upcomingDeadlines.map(c => `<div style="padding:8px 0; border-bottom:1px solid var(--line-soft); font-size:13.5px;">⏰ ${c.titulo} — ${c.data.split('T')[0]}</div>`).join('')
+      : `<div style="font-size:13px; color:var(--text-muted); font-style:italic;">Nenhum nos próximos 3 dias.</div>`;
+
+    html += `<button class="task-small-btn" id="closeDailySummaryBtn" style="width:100%; margin-top:22px;">Começar o dia</button>`;
+    box.innerHTML = html;
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+    document.getElementById('closeDailySummaryBtn').addEventListener('click', () => overlay.remove());
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
   }
 
   function parseCardDate(c) {
@@ -1456,12 +1797,11 @@
 
   function renderCalendar() {
     document.getElementById('calMonthLabel').textContent = `${monthNames[calMonth]} de ${calYear}`;
-    const offDays = Array.from(document.querySelectorAll('#projectFilters .chip.off')).map(c => c.dataset.proj);
-    const offStatus = Array.from(document.querySelectorAll('#statusFilters .chip.off')).map(c => c.dataset.status);
+    const filters = getActiveFilters();
     const grid = document.getElementById('calGrid');
 
     if (isMobileView()) {
-      renderCalendarAgenda(grid, offDays, offStatus);
+      renderCalendarAgenda(grid, filters);
       return;
     }
 
@@ -1478,8 +1818,7 @@
       cell.style.cursor='pointer';
       const num = document.createElement('div'); num.className='num'; num.textContent=day; cell.appendChild(num);
       cardsForDay(day).forEach(ev=>{
-        if (offDays.includes(ev.projeto_id)) return;
-        if (offStatus.includes(ev.status || 'pendente')) return;
+        if (!cardPassesFilters(ev, filters)) return;
         const item = document.createElement('div');
         item.className='cal-item'; item.style.borderColor=projColor[ev.projeto_id] || '#888'; item.textContent=`${TYPE_EMOJI[ev.tipo]||''} ${ev.titulo} ${statusEmoji(ev.status)}`;
         item.addEventListener('click', (e)=>{ e.stopPropagation(); openDayDetail(day); });
@@ -1490,14 +1829,14 @@
     }
   }
 
-  function renderCalendarAgenda(grid, offDays, offStatus) {
+  function renderCalendarAgenda(grid, filters) {
     grid.classList.add('agenda-mode');
     grid.innerHTML = '';
     const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
     const isCurrentRealMonth = (calYear === realToday.getFullYear() && calMonth === realToday.getMonth());
     let anyDay = false;
     for (let day = 1; day <= daysInMonth; day++) {
-      const items = cardsForDay(day).filter(ev => !offDays.includes(ev.projeto_id) && !offStatus.includes(ev.status || 'pendente'));
+      const items = cardsForDay(day).filter(ev => cardPassesFilters(ev, filters));
       const isToday = isCurrentRealMonth && day === realToday.getDate();
       if (items.length === 0 && !isToday) continue; // agenda só mostra dias com algo (ou hoje, como âncora)
       anyDay = true;
@@ -1758,26 +2097,26 @@
       const newHour = document.getElementById('taskHourInput').value;
       const extraInfoEl = document.getElementById('taskExtraInfoInput');
       const newExtraInfo = extraInfoEl ? extraInfoEl.value.trim() : ev.info_extra;
+      const oldStatus = ev.status;
       await apiPost('update', 'Cards', ev.id, { tipo: newType, projeto_id: newProj, status: newStatus, descricao: newDesc, data: newDate, hora: newHour || '', info_extra: newExtraInfo || '' });
       ev.tipo = newType; ev.projeto_id = newProj; ev.status = newStatus; ev.descricao = newDesc; ev.data = newDate; ev.hora = newHour; ev.info_extra = newExtraInfo;
       document.getElementById('detailEyebrow').textContent = TYPE_TO_LABEL[ev.tipo] || 'Tarefa';
 
-      // se marcada como entregue, remove o deadline vinculado automaticamente
-      if (newStatus === 'entregue') {
-        try {
-          const linked = await apiGet('Cards', { card_origem_id: ev.id });
-          const deadlines = linked.filter(c => c.tipo === 'deadline');
-          for (const d of deadlines) {
-            await apiPost('delete', 'Cards', d.id);
-            cardsData = cardsData.filter(c => c.id !== d.id);
-          }
-        } catch (e) { /* silencioso — se falhar, o deadline fica pra remoção manual */ }
-      }
-
       renderCalendar();
       if (refreshFn) refreshFn();
       renderTaskModeView(ev, refreshFn);
-      if (ev.tipo !== 'deadline') loadLinkedDeadline(ev, refreshFn);
+      if (ev.tipo !== 'deadline') {
+        await loadLinkedDeadline(ev, refreshFn);
+        // se acabou de virar feito/entregue, oferece excluir o deadline vinculado (se tiver um)
+        const justCompleted = (newStatus === 'feito' || newStatus === 'entregue') && oldStatus !== newStatus;
+        if (justCompleted) {
+          try {
+            const linked = await apiGet('Cards', { card_origem_id: ev.id });
+            const deadlines = linked.filter(c => c.tipo === 'deadline');
+            if (deadlines.length) promptDeleteLinkedDeadlines(ev, deadlines, refreshFn);
+          } catch (e) { /* silencioso — se falhar, o deadline fica disponível pra remoção manual */ }
+        }
+      }
       const extraViewEl = document.getElementById('taskExtraInfoView');
       if (extraViewEl) {
         extraViewEl.style.color = ev.info_extra ? 'var(--text-primary)' : 'var(--text-muted)';
@@ -1793,6 +2132,33 @@
   }
 
   // ---------- Deadline vinculado a uma tarefa ----------
+  function promptDeleteLinkedDeadlines(ev, deadlines, refreshFn) {
+    const container = document.getElementById('taskDeadlineSection');
+    if (!container) return;
+    const banner = document.createElement('div');
+    banner.style.cssText = 'margin-top:10px; padding:10px; border:1px solid var(--accent); font-size:12.5px;';
+    banner.innerHTML = `
+      <div style="margin-bottom:8px;">Tarefa concluída — excluir o deadline vinculado também?</div>
+      <div style="display:flex; gap:8px;">
+        <button class="task-small-btn" id="confirmDelDeadlineBtn">Excluir deadline</button>
+        <button class="task-small-btn" id="keepDeadlineBtn" style="border-color:var(--line); color:var(--text-muted);">Manter</button>
+      </div>`;
+    container.appendChild(banner);
+    document.getElementById('keepDeadlineBtn').addEventListener('click', () => banner.remove());
+    document.getElementById('confirmDelDeadlineBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('confirmDelDeadlineBtn');
+      if (btn.disabled) return;
+      btn.disabled = true; btn.textContent = 'Excluindo...';
+      for (const d of deadlines) {
+        await apiPost('delete', 'Cards', d.id);
+        cardsData = cardsData.filter(c => c.id !== d.id);
+      }
+      renderCalendar();
+      banner.remove();
+      loadLinkedDeadline(ev, refreshFn);
+    });
+  }
+
   async function loadLinkedDeadline(ev, refreshFn) {
     const container = document.getElementById('taskDeadlineSection');
     if (!container) return;
@@ -2063,8 +2429,7 @@
   }
 
   function openDayDetail(day) {
-    const offDays = Array.from(document.querySelectorAll('#projectFilters .chip.off')).map(c => c.dataset.proj);
-    const offStatus = Array.from(document.querySelectorAll('#statusFilters .chip.off')).map(c => c.dataset.status);
+    const filters = getActiveFilters();
     const dayCards = cardsForDay(day);
     resetDetailPanel();
     document.getElementById('detailEyebrow').textContent = 'Dia';
@@ -2075,8 +2440,7 @@
     let html = '';
     let visibleCount = 0;
     dayCards.forEach(ev => {
-      if (offDays.includes(ev.projeto_id)) return;
-      if (offStatus.includes(ev.status || 'pendente')) return;
+      if (!cardPassesFilters(ev, filters)) return;
       visibleCount++;
       html += `
         <div class="day-item-row" data-id="${ev.id}">
@@ -2710,16 +3074,15 @@
     const colsHtml = cols.map((col, idx) => {
       const cardsInCol = kanbanCardsData.filter(c => c.kanban_coluna_id === col.id);
       const colColor = col.cor || '';
-      const headTextColor = colColor ? pickTextColor(colColor) : '';
       return `
       <div class="kanban-col" data-col-id="${col.id}">
-        <div class="kanban-col-head" style="${colColor ? `background-color:${colColor}; color:${headTextColor};` : ''}">
-          <h4 style="${colColor ? `color:${headTextColor};` : ''}">${col.nome}</h4>
+        <div class="kanban-col-head" style="${colColor ? `border-bottom-color:${colColor};` : ''}">
+          <h4>${colColor ? `<span class="col-dot" style="background:${colColor}"></span>` : ''}${col.nome}</h4>
           <div class="row-actions">
-            <button class="row-action-btn move-col-left" title="Mover para esquerda" style="${colColor ? `color:${headTextColor};` : ''}" ${idx === 0 ? 'disabled' : ''}>◀</button>
-            <button class="row-action-btn move-col-right" title="Mover para direita" style="${colColor ? `color:${headTextColor};` : ''}" ${idx === cols.length - 1 ? 'disabled' : ''}>▶</button>
-            <button class="row-action-btn color-col" title="Cor da coluna" style="${colColor ? `color:${headTextColor};` : ''}">🎨</button>
-            <button class="row-action-btn edit-col" title="Renomear coluna" style="${colColor ? `color:${headTextColor};` : ''}">✎</button>
+            <button class="row-action-btn move-col-left" title="Mover para esquerda" ${idx === 0 ? 'disabled' : ''}>◀</button>
+            <button class="row-action-btn move-col-right" title="Mover para direita" ${idx === cols.length - 1 ? 'disabled' : ''}>▶</button>
+            <button class="row-action-btn color-col" title="Cor da coluna">🎨</button>
+            <button class="row-action-btn edit-col" title="Renomear coluna">✎</button>
             <button class="row-action-btn danger delete-col" title="Excluir coluna">🗑</button>
           </div>
         </div>
@@ -2781,10 +3144,14 @@
           buildSwatches(picker, async (c) => {
             col.cor = c;
             const headEl = colEl.querySelector('.kanban-col-head');
-            const txt = pickTextColor(c);
-            headEl.style.backgroundColor = c;
-            headEl.style.color = txt;
-            headEl.querySelectorAll('h4, .row-action-btn:not(.danger)').forEach(el => el.style.color = txt);
+            headEl.style.borderBottomColor = c;
+            let dot = headEl.querySelector('.col-dot');
+            if (!dot) {
+              dot = document.createElement('span');
+              dot.className = 'col-dot';
+              headEl.querySelector('h4').prepend(dot);
+            }
+            dot.style.background = c;
             await apiPost('update', 'KanbanColunas', colId, { cor: c });
           }, col.cor || paletteColors[0]);
         }
@@ -3251,24 +3618,37 @@
       let html = '';
       html += `<div class="detail-field"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">Tarefas & Deadlines (${tasksAndDeadlines.length})</label>`;
       html += tasksAndDeadlines.length
-        ? tasksAndDeadlines.map(c => `<div class="proj-detail-row"><span>${c.titulo}</span><span class="proj-detail-date">${TYPE_TO_LABEL[c.tipo] || 'Tarefa'} · ${c.data}</span></div>`).join('')
+        ? tasksAndDeadlines.map(c => `<div class="proj-detail-row proj-link-row" data-card-id="${c.id}" style="cursor:pointer;"><span>${c.titulo}</span><span class="proj-detail-date">${TYPE_TO_LABEL[c.tipo] || 'Tarefa'} · ${c.data} ↗</span></div>`).join('')
         : `<div style="color:var(--text-muted); font-style:italic; font-size:13px;">Nenhuma.</div>`;
       html += `</div>`;
 
       html += `<div class="detail-field"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">Quadros Kanban (${boards.length})</label>`;
       html += boards.length
-        ? boards.map(b => `<div class="proj-detail-row"><span>${b.nome}</span></div>`).join('')
+        ? boards.map(b => `<div class="proj-detail-row proj-link-board" data-board-id="${b.id}" style="cursor:pointer;"><span>${b.nome}</span><span class="proj-detail-date">Abrir ↗</span></div>`).join('')
         : `<div style="color:var(--text-muted); font-style:italic; font-size:13px;">Nenhum.</div>`;
       html += `</div>`;
 
       if (kanbanOnlyCards.length) {
         html += `<div class="detail-field"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">Cards de Painel (sem data, ${kanbanOnlyCards.length})</label>`;
-        html += kanbanOnlyCards.map(c => `<div class="proj-detail-row"><span>${c.titulo}</span></div>`).join('');
+        html += kanbanOnlyCards.map(c => `<div class="proj-detail-row proj-link-row" data-card-id="${c.id}" style="cursor:pointer;"><span>${c.titulo}</span><span class="proj-detail-date">↗</span></div>`).join('');
         html += `</div>`;
       }
 
       html += `<div class="detail-field"><label style="display:block; font-family:var(--font-utility); font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">Compartilhado com</label><div id="projectMembersList">Carregando...</div></div>`;
       wrap.innerHTML = html;
+
+      wrap.querySelectorAll('.proj-link-row').forEach(row => {
+        row.addEventListener('click', () => {
+          const card = cards.find(c => c.id === row.dataset.cardId);
+          if (card) openTaskDetail(card, () => openProjectDetail(project));
+        });
+      });
+      wrap.querySelectorAll('.proj-link-board').forEach(row => {
+        row.addEventListener('click', () => {
+          closeDetail();
+          document.querySelector('.nav-item[data-view="paineis"]').click();
+        });
+      });
 
       const members = await apiGet('ProjetoMembros', { projeto_id: project.id });
       const memberProfiles = members.map(m => profilesData.find(p => p.id === m.perfil_id)).filter(Boolean);
@@ -4138,11 +4518,43 @@
     document.getElementById('sidebar').classList.toggle('icons-only', style === 'icones');
     document.querySelectorAll('[data-style-opt]').forEach(b => b.classList.toggle('active', b.dataset.styleOpt === style));
   }
-  function applyHeaderImage(url) {
+  const headerPresets = [
+    { name: 'Horizonte Suave', css: 'radial-gradient(ellipse 60% 40% at 50% 75%, rgba(120,120,120,0.18) 0%, transparent 70%), linear-gradient(180deg, #f2f1ee 0%, #e9e7e2 100%)' },
+    { name: 'Vinho Difuso', css: 'radial-gradient(circle at 60% 35%, rgba(216,70,40,0.5) 0%, rgba(216,70,40,0.15) 35%, transparent 65%), linear-gradient(180deg, #faf8f5 0%, #f3f0ea 100%)' },
+    { name: 'Névoa Azul', css: 'radial-gradient(circle at 30% 30%, rgba(150,170,200,0.35) 0%, transparent 60%), radial-gradient(circle at 70% 70%, rgba(190,180,200,0.3) 0%, transparent 55%), linear-gradient(160deg, #f5f4f2 0%, #eceae6 100%)' },
+    { name: 'Bruma Dourada', css: 'radial-gradient(circle at 65% 40%, rgba(220,180,120,0.4) 0%, transparent 60%), linear-gradient(160deg, #faf6ee 0%, #f0e9da 100%)' },
+    { name: 'Papel Cru', css: 'radial-gradient(circle at 50% 20%, rgba(0,0,0,0.04) 0%, transparent 60%), linear-gradient(180deg, #f7f5f0 0%, #f0ede5 100%)' },
+    { name: 'Sombra Suave', css: 'radial-gradient(circle at 40% 60%, rgba(255,255,255,0.07) 0%, transparent 55%), linear-gradient(180deg, #14161a 0%, #1d2026 100%)' },
+    { name: 'Musgo Difuso', css: 'radial-gradient(circle at 60% 30%, rgba(140,170,120,0.32) 0%, transparent 60%), linear-gradient(160deg, #171d17 0%, #232b21 100%)' },
+    { name: 'Terracota Bruma', css: 'radial-gradient(circle at 35% 65%, rgba(190,110,80,0.38) 0%, transparent 60%), linear-gradient(160deg, #221510 0%, #33221a 100%)' },
+    { name: 'Violeta Bruma', css: 'radial-gradient(circle at 70% 30%, rgba(160,120,220,0.35) 0%, transparent 60%), linear-gradient(160deg, #17121f 0%, #241a30 100%)' },
+    { name: 'Ecrã Noturno', css: 'radial-gradient(circle at 50% 25%, rgba(120,140,180,0.2) 0%, transparent 65%), linear-gradient(180deg, #0b0d10 0%, #14171b 100%)' }
+  ];
+  function applyHeaderImage(val) {
     const headerEl = document.getElementById('header');
     const headerBg = document.getElementById('headerBg');
-    if (url) { headerBg.style.backgroundImage = `url(${url})`; headerEl.classList.add('has-image'); }
-    else { headerBg.style.backgroundImage = ''; headerEl.classList.remove('has-image'); }
+    if (val) {
+      const isGradient = /^(linear|radial|conic)-gradient/.test(val.trim());
+      headerBg.style.backgroundImage = isGradient ? val : `url(${val})`;
+      headerEl.classList.add('has-image');
+    } else { headerBg.style.backgroundImage = ''; headerEl.classList.remove('has-image'); }
+  }
+  function syncHeaderPresetActive(val) {
+    document.querySelectorAll('.header-preset-swatch[data-preset-idx]').forEach((el, i) => {
+      el.classList.toggle('active', !!val && headerPresets[i].css === val);
+    });
+  }
+  function applyPageBackground(val) {
+    if (val) {
+      const isGradient = /^(linear|radial|conic)-gradient/.test(val.trim());
+      document.body.style.setProperty('--page-bg-image', isGradient ? val : `url(${val})`);
+      document.body.classList.add('has-page-bg');
+    } else { document.body.style.removeProperty('--page-bg-image'); document.body.classList.remove('has-page-bg'); }
+  }
+  function syncPagePresetActive(val) {
+    document.querySelectorAll('.header-preset-swatch[data-page-preset-idx]').forEach((el, i) => {
+      el.classList.toggle('active', !!val && headerPresets[i].css === val);
+    });
   }
 
   async function loadAndApplyPreferences(profileId) {
@@ -4158,11 +4570,14 @@
         applyMenuPos(pref.layout_menu || 'esquerda');
         applyMenuStyle(pref.layout_estilo || 'texto');
         applyHeaderImage(pref.header_imagem_url || '');
+        syncHeaderPresetActive(pref.header_imagem_url || '');
+        applyPageBackground(pref.pagina_fundo || '');
+        syncPagePresetActive(pref.pagina_fundo || '');
         applyCloPersonality(pref.clo_personalidade || 'mordomo');
       } else {
         currentPrefsId = null;
         currentApiKeySet = false;
-        applyTheme('chumbo'); applyFont('fraunces'); applyMenuPos('esquerda'); applyMenuStyle('texto'); applyHeaderImage('');
+        applyTheme('chumbo'); applyFont('fraunces'); applyMenuPos('esquerda'); applyMenuStyle('texto'); applyHeaderImage(''); applyPageBackground('');
         applyCloPersonality('mordomo');
       }
     } catch (err) {
@@ -4190,12 +4605,49 @@
     reader.onload = ev => {
       applyHeaderImage(ev.target.result);
       pendingHeaderImage = ev.target.result;
+      document.querySelectorAll('.header-preset-swatch[data-preset-idx]').forEach(el => el.classList.remove('active'));
     };
     reader.readAsDataURL(file);
   });
   document.getElementById('clearHeaderImg').addEventListener('click', () => {
     applyHeaderImage('');
     pendingHeaderImage = '';
+    document.querySelectorAll('.header-preset-swatch[data-preset-idx]').forEach(el => el.classList.remove('active'));
+  });
+  document.querySelectorAll('.header-preset-swatch[data-preset-idx]').forEach(el => {
+    el.addEventListener('click', () => {
+      const css = headerPresets[Number(el.dataset.presetIdx)].css;
+      applyHeaderImage(css);
+      pendingHeaderImage = css;
+      document.querySelectorAll('.header-preset-swatch[data-preset-idx]').forEach(s => s.classList.remove('active'));
+      el.classList.add('active');
+    });
+  });
+
+  let pendingPageBackground = undefined;
+  document.getElementById('pageBgImgInput').addEventListener('change', e => {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      applyPageBackground(ev.target.result);
+      pendingPageBackground = ev.target.result;
+      document.querySelectorAll('.header-preset-swatch[data-page-preset-idx]').forEach(el => el.classList.remove('active'));
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('clearPageBg').addEventListener('click', () => {
+    applyPageBackground('');
+    pendingPageBackground = '';
+    document.querySelectorAll('.header-preset-swatch[data-page-preset-idx]').forEach(el => el.classList.remove('active'));
+  });
+  document.querySelectorAll('.header-preset-swatch[data-page-preset-idx]').forEach(el => {
+    el.addEventListener('click', () => {
+      const css = headerPresets[Number(el.dataset.pagePresetIdx)].css;
+      applyPageBackground(css);
+      pendingPageBackground = css;
+      document.querySelectorAll('.header-preset-swatch[data-page-preset-idx]').forEach(s => s.classList.remove('active'));
+      el.classList.add('active');
+    });
   });
 
   document.querySelectorAll('.settings-tab').forEach(tab => {
@@ -4430,9 +4882,11 @@
       layout_estilo: document.getElementById('sidebar').classList.contains('icons-only') ? 'icones' : 'texto',
     };
     if (pendingHeaderImage !== undefined) fields.header_imagem_url = pendingHeaderImage;
+    if (pendingPageBackground !== undefined) fields.pagina_fundo = pendingPageBackground;
     try {
       await savePreference(fields);
       pendingHeaderImage = undefined;
+      pendingPageBackground = undefined;
       statusEl.textContent = 'Salvo ✓';
       statusEl.style.color = 'var(--accent)';
     } catch (err) {
@@ -4650,6 +5104,7 @@
     loadRotinaView();
     loadIdeiasView();
     loadCloHistory();
+    loadNotifications();
   }
 
   function startApp(profileId) {
